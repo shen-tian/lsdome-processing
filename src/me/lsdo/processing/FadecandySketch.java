@@ -44,10 +44,10 @@ public class FadecandySketch<S> {
     protected HashMap<DomeCoord, PVector> points;
 
     // Size of a single panel's pixel grid
-    int panel_size;
+    protected int panel_size;
 
     // Layout configuration of panels
-    PanelLayout panel_config_mode;
+    protected PanelLayout panel_config_mode;
 
     // Distance from center to farthest pixel, in panel lengths
     double radius;

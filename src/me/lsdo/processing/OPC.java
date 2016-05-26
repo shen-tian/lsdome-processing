@@ -19,8 +19,10 @@ public class OPC implements Runnable
   Thread thread;
   Socket socket;
   OutputStream output, pending;
-  String host;
+  public String host;
   int port;
+
+  Dome dome;
 
   int[] pixelLocations;
   int[] pixelBuffer;
@@ -30,7 +32,7 @@ public class OPC implements Runnable
   boolean enableShowLocations;
   FramePostprocessor framePostprocessor;
 
-  OPC(PApplet parent, String host, int port)
+  public OPC(PApplet parent, String host, int port)
   {
     this.host = host;
     this.port = port;
@@ -39,6 +41,11 @@ public class OPC implements Runnable
     this.enableShowLocations = Config.DEBUG;
     this.app = parent;
     app.registerDraw(this);
+  }
+
+  public void setDome(Dome dome){
+    this.dome = dome;
+    setPixelCount(dome.coords.size());
   }
 
   // Mark the screen xy coordinates in 'points' as pixels 0..(n-1)
@@ -63,14 +70,6 @@ public class OPC implements Runnable
       }
   }
 
-  // Should the pixel sampling locations be visible? This helps with debugging.
-  // Showing locations is enabled by default. You might need to disable it if our drawing
-  // is interfering with your processing sketch, or if you'd simply like the screen to be
-  // less cluttered.
-  void showLocations(boolean enabled)
-  {
-    enableShowLocations = enabled;
-  }
 
   // Enable or disable dithering. Dithering avoids the "stair-stepping" artifact and increases color
   // resolution by quickly jittering between adjacent 8-bit brightness levels about 400 times a second.
@@ -203,24 +202,34 @@ public class OPC implements Runnable
   // separately.
   public void draw()
   {
-    if (pixelLocations == null) {
-      // No pixels defined yet
-      return;
-    }
-    if (output == null) {
-      return;
-    }
+    //if (pixelLocations == null) {
+    //  // No pixels defined yet
+    //  return;
+    //}
+    //if (output == null) {
+    //  return;
+    //}
 
-    int numPixels = pixelLocations.length;
+    int numPixels = dome.coords.size();
     int ledAddress = 4;
 
-    setPixelCount(numPixels);
-    app.loadPixels();
 
-    for (int i = 0; i < numPixels; i++) {
-      int pixelLocation = pixelLocations[i];
-      pixelBuffer[i] = (pixelLocation != -1 ? app.pixels[pixelLocation] : 0);
+    pixelBuffer = new int[numPixels];
+    //setPixelCount(numPixels);
+    //app.loadPixels();
+
+    //for (int i = 0; i < numPixels; i++) {
+    //  int pixelLocation = pixelLocations[i];
+    //  pixelBuffer[i] = (pixelLocation != -1 ? app.pixels[pixelLocation] : 0);
+    //}
+
+    //System.out.println(dome.coords.size());
+    //System.out.println(dome.getColor(dome.coords.get(0)));
+
+    for (int i = 0; i < dome.coords.size(); i++){
+      pixelBuffer[i] = dome.getColor(dome.coords.get(i));
     }
+
     if (framePostprocessor != null) {
       framePostprocessor.postProcessFrame(pixelBuffer);
     }
