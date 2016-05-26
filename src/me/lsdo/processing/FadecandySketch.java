@@ -120,14 +120,14 @@ public class FadecandySketch<S> {
 
     // **OVERRIDE** (optional)
     // Return the initial persistent state.
-    S initialState() {
+    protected S initialState() {
         return null;
     }
 
     // **OVERRIDE** (optional)
     // Update the persistent state from one frame to the next. t_delta is the time elapsed since the
     // previous frame.
-    S updateState(S state, double t_delta) {
+    protected S updateState(S state, double t_delta) {
         return state;
     }
 

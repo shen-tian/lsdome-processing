@@ -1,5 +1,5 @@
 import processing.core.*;
-import me.lsdo.*;
+import me.lsdo.processing.*;
 
 public class CloudsSketch extends PointSampleSketch<PVector, CloudsState> {
 
@@ -14,11 +14,12 @@ public class CloudsSketch extends PointSampleSketch<PVector, CloudsState> {
         mode = 0;
     }
 
-    CloudsState initialState() {
+    protected CloudsState initialState() {
+        System.out.println("Initial state!!");
         return new CloudsState();
     }
 
-    CloudsState updateState(CloudsState state, double delta_t) {
+    protected CloudsState updateState(CloudsState state, double delta_t) {
         double t = last_t + delta_t;
         double speed = 0.06;
         double zspeed = 3.;
@@ -31,7 +32,7 @@ public class CloudsSketch extends PointSampleSketch<PVector, CloudsState> {
         return state;
     }
 
-    int samplePoint(PVector p, double t, double t_jitter) {
+    protected int samplePoint(PVector p, double t, double t_jitter) {
         switch (mode) {
         case 0:
             return drawCloud(p, t);
@@ -73,7 +74,7 @@ public class CloudsSketch extends PointSampleSketch<PVector, CloudsState> {
         }
     }
 
-    void beforeFrame(double t) {
+    protected void beforeFrame(double t) {
 
     }
 
