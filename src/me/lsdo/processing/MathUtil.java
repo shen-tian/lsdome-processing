@@ -1,13 +1,11 @@
-package me.lsdo;
-
-import me.lsdo.*;
+package me.lsdo.processing;
 
 public class MathUtil {
 
-    static double LN2 = Math.log(2.);
+    public static double LN2 = Math.log(2.);
 
     // Fix java's stupid AF mod operator to always return a positive result
-    static int mod(int a, int b) {
+    public static int mod(int a, int b) {
         return ((a % b) + b) % b;
     }
 
@@ -19,7 +17,7 @@ public class MathUtil {
         return mod;
     }
 
-    static double log2(double x) {
+    public static double log2(double x) {
         return Math.log(x) / LN2;
     }
 

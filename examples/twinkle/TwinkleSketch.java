@@ -1,6 +1,6 @@
 import java.util.*;
 import processing.core.*;
-import me.lsdo.*;
+import me.lsdo.processing.*;
 
 public class TwinkleSketch extends PixelGridSketch<Object> {
 
@@ -27,8 +27,8 @@ public class TwinkleSketch extends PixelGridSketch<Object> {
     // Perform this many twinkling iterations per frame.
     final int SIMULATED_SPEEDUP = 1;
 
-    HashMap<DomeCoord, Double> brightness;
-    HashMap<DomeCoord, Double> saturation;
+    private HashMap<DomeCoord, Double> brightness;
+    private HashMap<DomeCoord, Double> saturation;
 
     public TwinkleSketch(PApplet app, int size_px) {
         super(app, size_px);

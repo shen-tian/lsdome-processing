@@ -1,4 +1,4 @@
-package me.lsdo;
+package me.lsdo.processing;
 
 // Template for sketches that compute pixel values directly based on their (x,y) position within a
 // a scene. This implies you have a sampling function to render a scene pixel-by-pixel (such as
@@ -10,7 +10,6 @@ package me.lsdo;
 
 import java.util.*;
 import processing.core.*;
-import me.lsdo.*;
 
 // IR is the type of the intermediate representation of the individual points to be sampled/rendered.
 public abstract class PointSampleSketch<IR, S> extends PixelGridSketch<S> {

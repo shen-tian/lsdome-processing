@@ -1,4 +1,4 @@
-package me.lsdo;
+package me.lsdo.processing;
 
 /*
  * Simple Open Pixel Control client for Processing,

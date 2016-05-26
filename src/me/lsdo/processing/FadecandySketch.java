@@ -16,7 +16,7 @@ void draw() {
 
 */
 
-package me.lsdo;
+package me.lsdo.processing;
 
 import java.util.*;
 import processing.core.*;
@@ -41,7 +41,7 @@ public class FadecandySketch<S> {
 
     // Mapping of pixel grid coordinates to xy locations (world coordinates, not screen
     // coordinates!)
-    HashMap<DomeCoord, PVector> points;
+    protected HashMap<DomeCoord, PVector> points;
 
     // Size of a single panel's pixel grid
     int panel_size;
@@ -192,7 +192,7 @@ public class FadecandySketch<S> {
 
     // **OVERRIDE** (optional)
     // A hook to be called before the frame is rendered.
-    void beforeFrame(double t) { }
+    protected void beforeFrame(double t) { }
 
     // **OVERRIDE** (optional)
     // A hook to be called after the frame is rendered.

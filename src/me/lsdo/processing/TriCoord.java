@@ -1,8 +1,7 @@
-package me.lsdo;
+package me.lsdo.processing;
 
 import java.util.*;
 import processing.core.*;
-import me.lsdo.*;
 
 // Representation of a lattice (integer) coordinate within a 3-axis triangular coordinate system.
 // Unlike a two-axis x/y coordinate system, a triangular lattice has points along 3 axes. It is
@@ -41,35 +40,35 @@ import me.lsdo.*;
 //
 // Coordinates can be converted to xy cartesian coordinates in LayoutUtil.
 
-enum CoordType {
-    UNIVERSAL,
-    PANEL,
-    PIXEL
-  }
-
-enum Axis {
-    U,
-    V,
-    W
-}
-
-enum PanelOrientation {
-    A,  // Horizontal edge on bottom
-    B   // Horizontal edge on top
-}
 
 public class TriCoord {
 
+    public enum CoordType {
+      UNIVERSAL,
+      PANEL,
+      PIXEL
+    }
+
+    public enum Axis {
+      U,
+      V,
+      W
+  }
+
+    public enum PanelOrientation {
+      A,  // Horizontal edge on bottom
+      B   // Horizontal edge on top
+  }
 
 
     static final Axis[] axes = {Axis.U, Axis.V, Axis.W};
     static final PanelOrientation[] orientations = {PanelOrientation.A, PanelOrientation.B};
 
     CoordType type;
-    int u;
-    int v;
-    int w;
-    int panel_length;
+    public int u;
+    public int v;
+    public int w;
+    public int panel_length;
 
     public TriCoord(CoordType type, int u, int v, int w) {
         this(type, u, v, w, 0);
@@ -131,7 +130,7 @@ public class TriCoord {
     }
 
     // Derive the orientation from the coordinate.
-    PanelOrientation getOrientation() {
+    public PanelOrientation getOrientation() {
         int sum = u + v + w;
         if (sum == checksum(PanelOrientation.A)) {
             return PanelOrientation.A;
@@ -143,7 +142,7 @@ public class TriCoord {
     }
 
     // Rotate the coordinate clockwise by rot * 60 degrees.
-    TriCoord rotate(int rot) {
+    public TriCoord rotate(int rot) {
         boolean invert = (MathUtil.mod(rot, 2) == 1);
         if (invert) {
             rot -= 3;
@@ -159,7 +158,7 @@ public class TriCoord {
     }
 
     // Flip about an axis.
-    TriCoord flip(Axis axis) {
+    public TriCoord flip(Axis axis) {
         switch (axis) {
         case U: return TriCoord.fromParts(type, Axis.U, u, Axis.V, w, getOrientation(), panel_length);
         case V: return TriCoord.fromParts(type, Axis.V, v, Axis.W, u, getOrientation(), panel_length);

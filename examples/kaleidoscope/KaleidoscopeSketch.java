@@ -1,8 +1,6 @@
-package me.lsdo;
-
 import java.util.*;
 import processing.core.*;
-import me.lsdo.*;
+import me.lsdo.processing.*;
 
 public class KaleidoscopeSketch extends PixelGridSketch<Object> {
 
@@ -11,10 +9,10 @@ public class KaleidoscopeSketch extends PixelGridSketch<Object> {
     public KaleidoscopeSketch(PApplet app, int size_px) {
         super(app, size_px);
 
-        basePanel = new TriCoord(CoordType.PANEL, 0, 0, -1);
+        basePanel = new TriCoord(TriCoord.CoordType.PANEL, 0, 0, -1);
     }
 
-    void beforeFrame(double t) {
+    protected void beforeFrame(double t) {
         for (DomeCoord c : coords) {
             if (c.panel.equals(basePanel)) {
                 pixelColors.put(c, getBasePixel(c, t));
@@ -32,11 +30,11 @@ public class KaleidoscopeSketch extends PixelGridSketch<Object> {
 
     protected int drawPixel(DomeCoord c, double t) {
         int pos = MathUtil.mod(c.panel.u - c.panel.v, 3);
-        int rot = MathUtil.mod(c.panel.getOrientation() == PanelOrientation.A ? 2*pos : 1-2*pos, 6);
+        int rot = MathUtil.mod(c.panel.getOrientation() == TriCoord.PanelOrientation.A ? 2*pos : 1-2*pos, 6);
         boolean flip = (MathUtil.mod(rot, 2) == 1);
         TriCoord basePx = c.pixel.rotate(rot);
         if (flip) {
-            basePx = basePx.flip(Axis.U);
+            basePx = basePx.flip(TriCoord.Axis.U);
         }
         return pixelColors.get(new DomeCoord(basePanel, basePx));
     }

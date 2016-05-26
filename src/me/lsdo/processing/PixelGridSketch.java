@@ -4,11 +4,10 @@
 // The color assigned may depend on its triangular grid position or its xy position-- all that matters
 // is that there is no underlying 'screen' being rendered that you want to pluck colors from.
 
-package me.lsdo;
+package me.lsdo.processing;
 
 import java.util.*;
 import processing.core.*;
-import me.lsdo.*;
 
 public abstract class PixelGridSketch<S> extends FadecandySketch<S> {
 

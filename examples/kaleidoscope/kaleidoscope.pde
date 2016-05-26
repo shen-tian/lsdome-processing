@@ -1,8 +1,6 @@
-// Twinkling stars.
-
 import me.lsdo.processing.*;
 
-FadecandySketch driver = new TwinkleSketch(this, 300);
+FadecandySketch driver = new KaleidoscopeSketch(this, 300);
 
 void setup() {
   driver.init();

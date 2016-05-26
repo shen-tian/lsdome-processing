@@ -1,9 +1,9 @@
 // Global configuration variables.
-package me.lsdo;
+package me.lsdo.processing;
 
 import java.util.*;
 import java.io.*;
-import me.lsdo.*;
+
 
 
 public class Config {

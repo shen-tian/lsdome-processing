@@ -1,9 +1,8 @@
-package me.lsdo;
+package me.lsdo.processing;
 
 import java.util.*;
 import processing.core.*;
 import processing.data.*;
-import me.lsdo.*;
 
 enum PanelLayout {
     _2,
@@ -106,7 +105,8 @@ public class LayoutUtil {
             int width = n - row;
             for (int col = 0; col < width; col++) {
                 int c = (reversed ? width - 1 - col : col);
-                TriCoord tc = TriCoord.fromParts(CoordType.PIXEL, Axis.U, row, Axis.V, c, PanelOrientation.A, n);
+                TriCoord tc = TriCoord.fromParts(TriCoord.CoordType.PIXEL,
+                  TriCoord.Axis.U, row, TriCoord.Axis.V, c, TriCoord.PanelOrientation.A, n);
                 coords.add(tc);
             }
         }
@@ -122,8 +122,9 @@ public class LayoutUtil {
         int u0 = (int)entry.x;
         int v0 = (int)entry.y;
         int[] o = offsets[MathUtil.mod(rot, 6)];
-        TriCoord panel = TriCoord.fromParts(CoordType.PANEL, Axis.U, u0 + o[0], Axis.V, v0 + o[1],
-                                            MathUtil.mod(rot, 2) == 0 ? PanelOrientation.A : PanelOrientation.B, 0);
+        TriCoord panel = TriCoord.fromParts(TriCoord.CoordType.PANEL,
+          TriCoord.Axis.U, u0 + o[0], TriCoord.Axis.V, v0 + o[1],
+          MathUtil.mod(rot, 2) == 0 ? TriCoord.PanelOrientation.A : TriCoord.PanelOrientation.B, 0);
 
         ArrayList<DomeCoord> coords = new ArrayList<DomeCoord>();
         for (TriCoord c : fillTriangle(n)) {
@@ -164,7 +165,7 @@ public class LayoutUtil {
         PVector root = c.panel.toV();
         PVector px = c.pixel.toV();
         PVector offset = V(1/SQRT_3, 1/SQRT_3);
-        if (c.panel.getOrientation() == PanelOrientation.B) {
+        if (c.panel.getOrientation() == TriCoord.PanelOrientation.B) {
             root = Vadd(root, V(1, 1));
             px = Vsub(px, V(c.pixel.panel_length - 1, c.pixel.panel_length - 1));
             offset = Vmult(offset, -1);

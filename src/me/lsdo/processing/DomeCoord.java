@@ -1,4 +1,4 @@
-package me.lsdo;
+package me.lsdo.processing;
 
 import java.util.*;
 import me.lsdo.*;
@@ -8,13 +8,13 @@ import me.lsdo.*;
 public class DomeCoord {
 
     // Every pixel in the dome has a unique coordinate.
-    TriCoord universal;
+    public TriCoord universal;
 
     // Universal coordinate split into a panel component...
-    TriCoord panel;
+    public TriCoord panel;
 
     // and a within-panel pixel component.
-    TriCoord pixel;
+    public TriCoord pixel;
 
     public DomeCoord(TriCoord uni, int panel_length) {
         universal = uni;
@@ -28,7 +28,7 @@ public class DomeCoord {
         this.pixel = pixel;
     }
 
-    TriCoord getCoord(CoordType type) {
+    TriCoord getCoord(TriCoord.CoordType type) {
         switch (type) {
         case UNIVERSAL: return universal;
         case PANEL: return panel;
