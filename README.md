@@ -1,4 +1,7 @@
 # lsdome library for Processing
+
+[![Build Status](https://travis-ci.org/shen-tian/lsdome-processing.svg?branch=master)](https://travis-ci.org/shen-tian/lsdome-processing)
+
 Processing Library for [Limitless Slip Dome](https://github.com/shen-tian/l-s-dome).
 This uses the correct format for Processing [Contributed Libraries]
 (https://github.com/processing/processing/wiki/How-to-Install-a-Contributed-Library). It still
@@ -21,6 +24,16 @@ an animation playlist of sorts.
 
 ## Build/Testing
 
+Gradle is working. Go
+
+    gradle build
+
+and find the jar file in `build\libs`. Will figure out a better
+solution later. This all runs on travis-ci too. Click the badge at top of this
+file to go see what's happening there.
+
+### Manual build
+
 To build the code, have a look at `src\build.sh`. It's dependent on both the
 location of processing 2.2.1 jar files, but also on where the processing Libraries
 are stored.
@@ -30,6 +43,8 @@ The rough steps are:
 1. Build the library code;
 2. JAR the whole lot into `lsdome.jar`;
 3. Deploy the whole library directory into the processing folder.
+
+## Using this
 
 For here, the library is available to all sketches, written and ran through the
 Processing IDE. Just include:

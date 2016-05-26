@@ -8,17 +8,22 @@ sourceSets {
     }
 }
 
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+jar {
+    baseName = 'lsdome'
+}
+
+// need the core Processing library to build.
 repositories {
     mavenCentral()
 }
-
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
 
 dependencies {
     compile "org.processing:core:2.2.1"
 }
 
-jar {
-    baseName = 'lsdome'
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.13'
 }
