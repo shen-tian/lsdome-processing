@@ -29,11 +29,11 @@ public abstract class PointSampleSketch<IR, S> extends PixelGridSketch<S> {
     // motion blur.
     boolean temporal_jitter;
 
-    PointSampleSketch(PApplet app, int size_px) {
+    public PointSampleSketch(PApplet app, int size_px) {
         this(app, size_px, DEFAULT_BASE_SUBSAMPLING, false);
     }
 
-    PointSampleSketch(PApplet app, int size_px, int base_subsampling, boolean temporal_jitter) {
+    public PointSampleSketch(PApplet app, int size_px, int base_subsampling, boolean temporal_jitter) {
         super(app, size_px);
         this.base_subsampling = base_subsampling;
         this.temporal_jitter = temporal_jitter;
@@ -42,7 +42,7 @@ public abstract class PointSampleSketch<IR, S> extends PixelGridSketch<S> {
     // Assign each display pixel to N random samples based on the required amount of subsampling.
     // Furthermore, each subsample is converted to its intermediate representation to avoid
     // re-computing it every frame.
-    void init() {
+    public void init() {
         super.init();
 
         points_ir = new HashMap<DomeCoord, ArrayList<IR>>();
@@ -75,7 +75,7 @@ public abstract class PointSampleSketch<IR, S> extends PixelGridSketch<S> {
 
     // Convert an xy coordinate in 'panel length' units such that the perimeter of the display area
     // is the unit circle.
-    PVector normalizePoint(PVector p) {
+    protected PVector normalizePoint(PVector p) {
         return LayoutUtil.Vmult(p, 1. / radius);
     }
 
@@ -95,7 +95,7 @@ public abstract class PointSampleSketch<IR, S> extends PixelGridSketch<S> {
         return (IR)p;
     }
 
-    int drawPixel(DomeCoord c, double t) {
+    protected int drawPixel(DomeCoord c, double t) {
         return sampleAntialiased(points_ir.get(c), t);
     }
 
@@ -111,7 +111,7 @@ public abstract class PointSampleSketch<IR, S> extends PixelGridSketch<S> {
 
     // Render an individual sample. 't' is clock time, including temporal jitter. 't_jitter' is the
     // amount of jitter added. Return a color.
-    abstract int samplePoint(IR ir, double t, double t_jitter);
+    protected abstract int samplePoint(IR ir, double t, double t_jitter);
 
     int blendSamples(int[] samples) {
         int blended = samples[0];

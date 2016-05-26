@@ -20,7 +20,6 @@ package me.lsdo;
 
 import java.util.*;
 import processing.core.*;
-import me.lsdo.*;
 
 // S is the type of the state that is maintained and updated each frame.
 public class FadecandySketch<S> {
@@ -28,7 +27,7 @@ public class FadecandySketch<S> {
     static final int COLOR_STEPS = 100;
 
     // Reference to processing sketch object
-    PApplet app;
+    protected PApplet app;
 
     // width and height of processing canvas, in pixels
     int width, height;
@@ -38,7 +37,7 @@ public class FadecandySketch<S> {
 
     // Positions of all the pixels in triangular grid coordinates (and in the order seen by
     // the fadecandy).
-    ArrayList<DomeCoord> coords;
+    protected ArrayList<DomeCoord> coords;
 
     // Mapping of pixel grid coordinates to xy locations (world coordinates, not screen
     // coordinates!)
@@ -54,10 +53,10 @@ public class FadecandySketch<S> {
     double radius;
 
     // Ongoing state to be updated each frame (such as positions, directions, etc.).
-    S state;
+    protected S state;
 
     // Timestamp of the most recent completed frame.
-    double last_t;
+    protected double last_t;
 
     public FadecandySketch(PApplet app, int size_px) {
         this(app, size_px, size_px);
@@ -94,19 +93,9 @@ public class FadecandySketch<S> {
                                          Config.PANEL_LAYOUT).radius;
     }
 
-    public void Start()
-    {
-      init();
-    }
-
-    public void Run()
-    {
-      draw();
-    }
-
     // Override this if you have more specific initialization to perform. Be sure to call
     // super.init()!
-    void init() {
+    public void init() {
         app.size(width, height, app.P2D);
 
         String hostname = Config.getConfig().FADECANDY_HOST;
@@ -161,12 +150,12 @@ public class FadecandySketch<S> {
     }
 
     // Convert a screen pixel position to world coordinates.
-    PVector screenToXy(PVector p) {
+    protected PVector screenToXy(PVector p) {
         return LayoutUtil.screenToXy(p, width, height, 2*radius, true);
     }
 
     // Inverse of screenToXy()
-    PVector xyToScreen(PVector p) {
+    protected PVector xyToScreen(PVector p) {
         return LayoutUtil.xyToScreen(p, width, height, 2*radius, true);
     }
 
@@ -180,7 +169,7 @@ public class FadecandySketch<S> {
         }
     }
 
-    void draw() {
+    public void draw() {
         double t = app.millis() / 1000.;
 
         _updateState(t);
@@ -218,7 +207,7 @@ public class FadecandySketch<S> {
     void keyPressed() { }
 
     // Helper function to generate a color. r/g/b all in the range [0, 1].
-    int color(double r, double g, double b) {
+    protected int color(double r, double g, double b) {
         return app.color((float)(COLOR_STEPS * r), (float)(COLOR_STEPS * g), (float)(COLOR_STEPS * b));
     }
 

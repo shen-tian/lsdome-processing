@@ -30,7 +30,7 @@ public class KaleidoscopeSketch extends PixelGridSketch<Object> {
         return color(MathUtil.fmod(p.x + .4081*t, 1.), .6, .5*(Math.cos(40*p.x)+1));
     }
 
-    int drawPixel(DomeCoord c, double t) {
+    protected int drawPixel(DomeCoord c, double t) {
         int pos = MathUtil.mod(c.panel.u - c.panel.v, 3);
         int rot = MathUtil.mod(c.panel.getOrientation() == PanelOrientation.A ? 2*pos : 1-2*pos, 6);
         boolean flip = (MathUtil.mod(rot, 2) == 1);

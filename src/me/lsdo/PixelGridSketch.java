@@ -10,25 +10,16 @@ import java.util.*;
 import processing.core.*;
 import me.lsdo.*;
 
-public class PixelGridSketch<S> extends FadecandySketch<S> {
+public abstract class PixelGridSketch<S> extends FadecandySketch<S> {
 
-    HashMap<DomeCoord, Integer> pixelColors;
+    protected HashMap<DomeCoord, Integer> pixelColors;
 
     public PixelGridSketch(PApplet app, int size_px) {
         super(app, size_px);
     }
 
-    public void Start()
-    {
-      init();
-    }
 
-    public void DrawMe()
-    {
-      draw();
-    }
-
-    void init() {
+    public void init() {
         super.init();
 
         pixelColors = new HashMap<DomeCoord, Integer>();
@@ -37,7 +28,7 @@ public class PixelGridSketch<S> extends FadecandySketch<S> {
         }
     }
 
-    void draw(double t) {
+    public void draw(double t) {
         app.background(0);
         app.loadPixels();
         for (int i = 0; i < coords.size(); i++) {
@@ -46,10 +37,11 @@ public class PixelGridSketch<S> extends FadecandySketch<S> {
         app.updatePixels();
     }
 
+    protected abstract int drawPixel(DomeCoord c, double t);
     // You can set the pixel colors in pixelColors in beforeFrame() and they will be automatically
     // rendered here. Or, you can override drawPixel() directly.
-    int drawPixel(DomeCoord c, double t) {
-        return pixelColors.get(c);
-    }
+    //int drawPixel(DomeCoord c, double t) {
+    //    return pixelColors.get(c);
+    //}
 
 }
