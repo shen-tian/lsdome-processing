@@ -8,7 +8,7 @@ import processing.core.*;
 public class Dome {
 
     // width and height of processing canvas, in pixels
-    int width, height;
+    public int width, height;
 
     // Positions of all the pixels in triangular grid coordinates (and in the order seen by
     // the fadecandy).
@@ -27,7 +27,7 @@ public class Dome {
     protected PanelLayout panel_config_mode;
 
     // Distance from center to farthest pixel, in panel lengths
-    double radius;
+    public double radius;
 
     public Dome(int size_px) {
         this(size_px, size_px);

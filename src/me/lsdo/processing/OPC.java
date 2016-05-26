@@ -11,11 +11,11 @@ package me.lsdo.processing;
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import processing.core.*;
+//import processing.core.*;
 
 public class OPC implements Runnable
 {
-  PApplet app;
+  //PApplet app;
   Thread thread;
   Socket socket;
   OutputStream output, pending;
@@ -32,15 +32,15 @@ public class OPC implements Runnable
   boolean enableShowLocations;
   FramePostprocessor framePostprocessor;
 
-  public OPC(PApplet parent, String host, int port)
+  public OPC(Object parent, String host, int port)
   {
     this.host = host;
     this.port = port;
     thread = new Thread(this);
     thread.start();
     this.enableShowLocations = Config.DEBUG;
-    this.app = parent;
-    app.registerDraw(this);
+    //this.app = parent;
+    //app.registerDraw(this);
   }
 
   public void setDome(Dome dome){
@@ -49,25 +49,9 @@ public class OPC implements Runnable
   }
 
   // Mark the screen xy coordinates in 'points' as pixels 0..(n-1)
-  void registerLEDs(ArrayList<PVector> points) {
-      // TODO map a dome pixel to several screen pixels to support subsampling?
-      pixelLocations = new int[points.size()];
-      pixelBuffer = new int[pixelLocations.length];
-      for (int i = 0; i < pixelLocations.length; i++) {
-          PVector p = points.get(i);
-          if (p == null) {
-              pixelLocations[i] = -1;
-              continue;
-          }
+  void registerLEDs(Object foo) {
 
-          int x = (int)Math.floor(p.x);
-          int y = (int)Math.floor(p.y);
-          if (x >= 0 && x < app.width && y >= 0 && y < app.height) {
-              pixelLocations[i] = x + app.width * y;
-          } else {
-              pixelLocations[i] = -1;
-          }
-      }
+    return;
   }
 
 
@@ -241,18 +225,10 @@ public class OPC implements Runnable
       packetData[ledAddress + 2] = (byte)pixel;
       ledAddress += 3;
 
-      if (enableShowLocations) {
-        // FIXME this doesn't seem to work?
-        int pixelLocation = pixelLocations[i];
-        app.pixels[pixelLocation] = 0xFFFFFF ^ pixel;
-      }
     }
 
     writePixels();
 
-    if (enableShowLocations) {
-      app.updatePixels();
-    }
   }
 
   // Change the number of pixels in our output packet.

@@ -27,6 +27,7 @@ void draw() {
         fill(dome.getColor(c));
            ellipse(p.x, p.y, 3, 3);
         }
+    opc.draw();
     
     text("opc @" + opc.host, 100, height - 10);
     text(String.format("%.1ffps", frameRate), 10, height - 10);

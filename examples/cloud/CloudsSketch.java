@@ -8,13 +8,17 @@ import me.lsdo.processing.*;
 
 public class CloudsSketch extends PointSampleSketch<PVector, CloudsState> {
 
+    CloudsState state;
+    double last_t;
     int mode;
 
     double noiseScale=0.02;
 
-    CloudsSketch(PApplet app, int size_px) {
-        super(app, size_px);
-        mode = 0;
+    CloudsSketch(PApplet app, Dome dome, int size_px) {
+        super(app, dome, size_px);
+        mode = 1;
+        
+        state = initialState();
     }
 
     protected CloudsState initialState() {
@@ -72,10 +76,10 @@ public class CloudsSketch extends PointSampleSketch<PVector, CloudsState> {
         double n = fractalNoise(state.dx + p.x*scale, state.dy + p.y*scale, z) - 0.75;
         double m = fractalNoise(state.dx + p.x*scale, state.dy + p.y*scale, z + 10.0) - 0.75;
                     
-        return color(
-                     MathUtil.fmod(hue + .8 * m, 1.), 
-                     1. - constrain(Math.pow(3.0 * n, 3.5), 0, 0.9), 
-                     constrain(Math.pow(3.0 * n, 1.5), 0, 0.9)
+        return app.color(
+                     (int)(255 * MathUtil.fmod(hue + .8 * m, 1.)), 
+                     (int)(255 * (1. - constrain(Math.pow(3.0 * n, 3.5), 0, 0.9))), 
+                     (int)(255 * constrain(Math.pow(3.0 * n, 1.5), 0, 0.9))
                      );
     }
 
@@ -99,10 +103,10 @@ public class CloudsSketch extends PointSampleSketch<PVector, CloudsState> {
         double n = fractalNoise(state.dx + p.x*scale + pulse, state.dy + p.y*scale, z) - 0.75;
         double m = fractalNoise(state.dx + p.x*scale, state.dy + p.y*scale, z + 10.0) - 0.75;
                     
-        return color(
-                     MathUtil.fmod(hue + .4 * m, 1.), 
-                     saturation,
-                     constrain(Math.pow(3.0 * n, 1.5), 0, 0.9)
+        return app.color(
+                     (int)(255 * MathUtil.fmod(hue + .4 * m, 1.)), 
+                     (int)(255 * saturation),
+                     (int)(255 * constrain(Math.pow(3.0 * n, 1.5), 0, 0.9))
                      );
     }
 

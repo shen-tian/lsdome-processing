@@ -32,6 +32,7 @@ void draw() {
         fill(dome.getColor(c));
            ellipse(p.x, p.y, 3, 3);
         }
+     opc.draw();
         
     fill(128);
     text("opc @" + opc.host, 100, height - 10);

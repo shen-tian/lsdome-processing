@@ -12,14 +12,19 @@ import java.util.*;
 import processing.core.*;
 
 // IR is the type of the intermediate representation of the individual points to be sampled/rendered.
-public abstract class PointSampleSketch<IR, S> extends PixelGridSketch<S> {
+public abstract class PointSampleSketch<IR, S> {
 
     static final int DEFAULT_BASE_SUBSAMPLING = 1;
     static final int MAX_SUBSAMPLING = 64;
 
+    S state;
+
     // Mapping of display pixels to 1 or more actual samples that will be combined to yield that
     // display pixel's color.
     HashMap<DomeCoord, ArrayList<IR>> points_ir;
+
+    Dome dome;
+    protected PApplet app;
 
     // Amount of subsampling for each display pixel.
     int base_subsampling;
@@ -28,26 +33,27 @@ public abstract class PointSampleSketch<IR, S> extends PixelGridSketch<S> {
     // motion blur.
     boolean temporal_jitter;
 
-    public PointSampleSketch(PApplet app, int size_px) {
-        this(app, size_px, DEFAULT_BASE_SUBSAMPLING, false);
+    public PointSampleSketch(PApplet app, Dome dome, int size_px) {
+        this(app, dome, size_px, DEFAULT_BASE_SUBSAMPLING, false);
     }
 
-    public PointSampleSketch(PApplet app, int size_px, int base_subsampling, boolean temporal_jitter) {
-        super(app, size_px);
+    public PointSampleSketch(PApplet app, Dome dome, int size_px, int base_subsampling, boolean temporal_jitter) {
         this.base_subsampling = base_subsampling;
         this.temporal_jitter = temporal_jitter;
+        this.dome = dome;
+        this.app = app;
     }
 
     // Assign each display pixel to N random samples based on the required amount of subsampling.
     // Furthermore, each subsample is converted to its intermediate representation to avoid
     // re-computing it every frame.
     public void init() {
-        super.init();
+
 
         points_ir = new HashMap<DomeCoord, ArrayList<IR>>();
         int total_subsamples = 0;
-        for (DomeCoord c : coords) {
-            PVector p = points.get(c);
+        for (DomeCoord c : dome.coords) {
+            PVector p = dome.points.get(c);
             ArrayList<IR> samples = new ArrayList<IR>();
             points_ir.put(c, samples);
 
@@ -57,7 +63,7 @@ public abstract class PointSampleSketch<IR, S> extends PixelGridSketch<S> {
             for (int i = 0; i < num_subsamples; i++) {
                 PVector offset = (jitter ?
                                   normalizePoint(LayoutUtil.polarToXy(LayoutUtil.V(
-                                      Math.random() * .5*LayoutUtil.pixelSpacing(panel_size),
+                                      Math.random() * .5*LayoutUtil.pixelSpacing(dome.panel_size),
                                       Math.random() * 2*Math.PI
                                   ))) :
                                   LayoutUtil.V(0, 0));
@@ -69,13 +75,13 @@ public abstract class PointSampleSketch<IR, S> extends PixelGridSketch<S> {
         }
 
         System.out.println(String.format("%d subsamples for %d pixels (%.1f samples/pixel)",
-                                         total_subsamples, points.size(), (double)total_subsamples / points.size()));
+                                         total_subsamples, dome.points.size(), (double)total_subsamples / dome.points.size()));
     }
 
     // Convert an xy coordinate in 'panel length' units such that the perimeter of the display area
     // is the unit circle.
     protected PVector normalizePoint(PVector p) {
-        return LayoutUtil.Vmult(p, 1. / radius);
+        return LayoutUtil.Vmult(p, 1. / dome.radius);
     }
 
     // **OVERRIDE** (optional)
