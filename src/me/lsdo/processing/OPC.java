@@ -10,8 +10,6 @@ package me.lsdo.processing;
 
 import java.io.*;
 import java.net.*;
-import java.util.*;
-//import processing.core.*;
 
 public class OPC implements Runnable
 {
@@ -39,8 +37,6 @@ public class OPC implements Runnable
     thread = new Thread(this);
     thread.start();
     this.enableShowLocations = Config.DEBUG;
-    //this.app = parent;
-    //app.registerDraw(this);
   }
 
   public void setDome(Dome dome){

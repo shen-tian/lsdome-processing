@@ -1,6 +1,7 @@
 package me.lsdo.processing;
 
 import java.util.*;
+
 import processing.core.*;
 
 // Representation of a lattice (integer) coordinate within a 3-axis triangular coordinate system.
@@ -44,21 +45,21 @@ import processing.core.*;
 public class TriCoord {
 
     public enum CoordType {
-      UNIVERSAL,
-      PANEL,
-      PIXEL
+        UNIVERSAL,
+        PANEL,
+        PIXEL
     }
 
     public enum Axis {
-      U,
-      V,
-      W
-  }
+        U,
+        V,
+        W
+    }
 
     public enum PanelOrientation {
-      A,  // Horizontal edge on bottom
-      B   // Horizontal edge on top
-  }
+        A,  // Horizontal edge on bottom
+        B   // Horizontal edge on top
+    }
 
 
     static final Axis[] axes = {Axis.U, Axis.V, Axis.W};
@@ -160,10 +161,14 @@ public class TriCoord {
     // Flip about an axis.
     public TriCoord flip(Axis axis) {
         switch (axis) {
-        case U: return TriCoord.fromParts(type, Axis.U, u, Axis.V, w, getOrientation(), panel_length);
-        case V: return TriCoord.fromParts(type, Axis.V, v, Axis.W, u, getOrientation(), panel_length);
-        case W: return TriCoord.fromParts(type, Axis.W, w, Axis.U, v, getOrientation(), panel_length);
-        default: throw new RuntimeException();
+            case U:
+                return TriCoord.fromParts(type, Axis.U, u, Axis.V, w, getOrientation(), panel_length);
+            case V:
+                return TriCoord.fromParts(type, Axis.V, v, Axis.W, u, getOrientation(), panel_length);
+            case W:
+                return TriCoord.fromParts(type, Axis.W, w, Axis.U, v, getOrientation(), panel_length);
+            default:
+                throw new RuntimeException();
         }
     }
 
@@ -171,25 +176,25 @@ public class TriCoord {
         assert panel.type == CoordType.PANEL;
         assert pixel.type == CoordType.PIXEL;
         return new TriCoord(CoordType.UNIVERSAL,
-                            pixel.panel_length * panel.u + pixel.u,
-                            pixel.panel_length * panel.v + pixel.v,
-                            pixel.panel_length * panel.w + pixel.w);
+                pixel.panel_length * panel.u + pixel.u,
+                pixel.panel_length * panel.v + pixel.v,
+                pixel.panel_length * panel.w + pixel.w);
     }
 
     static TriCoord toPanel(TriCoord uni, int panel_length) {
         assert uni.type == CoordType.UNIVERSAL;
         return new TriCoord(CoordType.PANEL,
-                            (int)Math.floor(uni.u / (double)panel_length),
-                            (int)Math.floor(uni.v / (double)panel_length),
-                            (int)Math.floor(uni.w / (double)panel_length));
+                (int) Math.floor(uni.u / (double) panel_length),
+                (int) Math.floor(uni.v / (double) panel_length),
+                (int) Math.floor(uni.w / (double) panel_length));
     }
 
     static TriCoord toPixel(TriCoord uni, int panel_length) {
         assert uni.type == CoordType.UNIVERSAL;
         return new TriCoord(CoordType.PIXEL,
-                            MathUtil.mod(uni.u, panel_length),
-                            MathUtil.mod(uni.v, panel_length),
-                            MathUtil.mod(uni.w, panel_length));
+                MathUtil.mod(uni.u, panel_length),
+                MathUtil.mod(uni.v, panel_length),
+                MathUtil.mod(uni.w, panel_length));
     }
 
     PVector toV() {
@@ -198,16 +203,20 @@ public class TriCoord {
 
     int getAxis(Axis ax) {
         switch (ax) {
-        case U: return u;
-        case V: return v;
-        case W: return w;
-        default: throw new RuntimeException();
+            case U:
+                return u;
+            case V:
+                return v;
+            case W:
+                return w;
+            default:
+                throw new RuntimeException();
         }
     }
 
     public boolean equals(Object o) {
         if (o instanceof TriCoord) {
-            TriCoord tc = (TriCoord)o;
+            TriCoord tc = (TriCoord) o;
             return type == tc.type && u == tc.u && v == tc.v && w == tc.w;
         } else {
             return false;

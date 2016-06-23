@@ -6,6 +6,12 @@ sourceSets {
             srcDir 'src'
         }
     }
+
+    test {
+        java {
+            srcDir 'src/test'
+        }
+    }
 }
 
 sourceCompatibility = 1.6
@@ -22,6 +28,8 @@ repositories {
 
 dependencies {
     compile "org.processing:core:2.2.1"
+    compile "junit:junit:3.8.2"
+
 }
 
 task wrapper(type: Wrapper) {
