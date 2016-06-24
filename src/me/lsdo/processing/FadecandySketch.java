@@ -100,7 +100,7 @@ public class FadecandySketch<S> {
 
         String hostname = Config.getConfig().FADECANDY_HOST;
         int port = 7890;
-        opc = new OPC(app, hostname, port);
+        opc = new OPC(hostname, port);
 
         panel_size = Config.PANEL_SIZE;
         panel_config_mode = Config.PANEL_LAYOUT;
@@ -142,11 +142,11 @@ public class FadecandySketch<S> {
     // For sampling from a rendered screen. Convert led positions from world coordinates to screen pixels and register with
     // the fadecandy(ies).
     void registerScreenSamples() {
-        opc.registerLEDs(LayoutUtil.transform(pixelLocationsInOrder(), new LayoutUtil.Transform() {
-                public PVector transform(PVector p) {
-                    return xyToScreen(p);
-                }
-            }));
+        //opc.registerLEDs(LayoutUtil.transform(pixelLocationsInOrder(), new LayoutUtil.Transform() {
+        //        public PVector transform(PVector p) {
+        //            return xyToScreen(p);
+        //        }
+        //    }));
     }
 
     // Convert a screen pixel position to world coordinates.
@@ -163,10 +163,10 @@ public class FadecandySketch<S> {
     // TODO for sketches that only render pixels directly, is there a cost penalty for going
     // through the screen buffer?
     void setLED(int i, int rgb) {
-        int px = opc.pixelLocations[i];
-        if (px >= 0) {
-            app.pixels[px] = rgb;
-        }
+        //int px = opc.pixelLocations[i];
+        //if (px >= 0) {
+        //    app.pixels[px] = rgb;
+        //}
     }
 
     private void draw() {
@@ -178,11 +178,6 @@ public class FadecandySketch<S> {
         beforeFrame(t);
         draw(t);
         afterFrame(t);
-
-        // The HUD: think this space is (almost) never mapped to pixels.
-        app.fill(0,0,100);
-        app.text("OPC @" + opc.host, 100, app.height - 10);
-        app.text(String.format("%.1ffps", app.frameRate), 10, app.height - 10);
     }
 
     void _updateState(double t) {

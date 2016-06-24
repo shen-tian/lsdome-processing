@@ -8,7 +8,7 @@ OPC opc;
 void setup() {
     size(300, 300);
     dome = new Dome();
-    opc = new OPC(this, "127.0.0.1", 7890);
+    opc = new OPC("127.0.0.1", 7890);
     opc.setDome(dome);
     kaleido = new KaleidoscopeSketch(this ,width, dome);
     //kaleido.init();

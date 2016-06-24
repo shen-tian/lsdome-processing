@@ -10,7 +10,7 @@ OPC opc;
 void setup() {
     size(300, 300);
     dome = new Dome();
-    opc = new OPC(this, "127.0.0.1", 7890);
+    opc = new OPC("127.0.0.1", 7890);
     opc.setDome(dome);
     cloud = new CloudsSketch(this, dome, width);
   //cloud.init();
@@ -33,7 +33,7 @@ void draw() {
      opc.draw();
         
     fill(128);
-    text("opc @" + opc.host, 100, height - 10);
+    text("opc @" + opc.getHost(), 100, height - 10);
     text(String.format("%.1ffps", frameRate), 10, height - 10);
   
 }

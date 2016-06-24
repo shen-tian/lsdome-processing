@@ -29,7 +29,6 @@ public class Dome {
     // Distance from center to farthest pixel, in panel lengths
     private double radius;
 
-
     public Dome() {
 
         // e.g. 15
