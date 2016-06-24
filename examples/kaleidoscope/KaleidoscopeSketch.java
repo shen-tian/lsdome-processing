@@ -24,7 +24,7 @@ public class KaleidoscopeSketch {
 
     // colors for the base panel. What algorithm is here?
     int getBasePixel(DomeCoord c, double t) {
-        PVector p = dome.points.get(c);
+        PVector p = dome.getLocation(c);
         p = LayoutUtil.Vrot(p, t * (.5 + 3*.5*(Math.cos(.1213*t)+1)));
         p = LayoutUtil.Vmult(p, 1/(1 + 5*.5*(Math.cos(.3025*t)+1)));
         p = LayoutUtil.Vadd(p, LayoutUtil.V(2*Math.cos(.2*t), 0));
@@ -41,7 +41,7 @@ public class KaleidoscopeSketch {
         if (flip) {
             basePx = basePx.flip(TriCoord.Axis.U);
         }
-        return dome.colors.get(new DomeCoord(basePanel, basePx));
+        return dome.getColor(new DomeCoord(basePanel, basePx));
     }
     
     public void draw(double t)

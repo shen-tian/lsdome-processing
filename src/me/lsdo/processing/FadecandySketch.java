@@ -96,7 +96,7 @@ public class FadecandySketch<S> {
     // Override this if you have more specific initialization to perform. Be sure to call
     // super.init()!
     public void init() {
-        app.size(width, height, app.P2D);
+        //app.size(width, height, app.P2D);
 
         String hostname = Config.getConfig().FADECANDY_HOST;
         int port = 7890;
@@ -169,7 +169,9 @@ public class FadecandySketch<S> {
         }
     }
 
-    public void draw() {
+    private void draw() {
+
+        // don't think this ever runs anymore....
         double t = app.millis() / 1000.;
 
         _updateState(t);
@@ -179,7 +181,7 @@ public class FadecandySketch<S> {
 
         // The HUD: think this space is (almost) never mapped to pixels.
         app.fill(0,0,100);
-        app.text("opc @" + opc.host, 100, app.height - 10);
+        app.text("OPC @" + opc.host, 100, app.height - 10);
         app.text(String.format("%.1ffps", app.frameRate), 10, app.height - 10);
     }
 

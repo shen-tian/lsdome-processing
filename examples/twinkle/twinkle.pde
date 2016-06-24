@@ -10,8 +10,8 @@ OPC opc;
 
 void setup() {
     size(300, 300);
-  dome = new Dome(300);
-  dome.init();
+  dome = new Dome();
+  //dome.init();
   opc = new OPC(this, "127.0.0.1", 7890);
   opc.setDome(dome);
   twinkle = new TwinkleSketch(this,dome);
@@ -28,7 +28,8 @@ void draw() {
       background(0);
     noStroke();
     for (DomeCoord c : dome.coords){
-        PVector p = dome.xyToScreen(dome.points.get(c));
+        PVector p = LayoutUtil.xyToScreen(dome.getLocation(c), width, height, 2*dome.radius, true);
+        //dome.xyToScreen(dome.getLocation(c));
         fill(dome.getColor(c));
            ellipse(p.x, p.y, 3, 3);
         }

@@ -53,7 +53,7 @@ public abstract class PointSampleSketch<IR, S> {
         points_ir = new HashMap<DomeCoord, ArrayList<IR>>();
         int total_subsamples = 0;
         for (DomeCoord c : dome.coords) {
-            PVector p = dome.points.get(c);
+            PVector p = dome.getLocation(c);
             ArrayList<IR> samples = new ArrayList<IR>();
             points_ir.put(c, samples);
 
@@ -63,7 +63,7 @@ public abstract class PointSampleSketch<IR, S> {
             for (int i = 0; i < num_subsamples; i++) {
                 PVector offset = (jitter ?
                                   normalizePoint(LayoutUtil.polarToXy(LayoutUtil.V(
-                                      Math.random() * .5*LayoutUtil.pixelSpacing(dome.panel_size),
+                                      Math.random() * .5*LayoutUtil.pixelSpacing(dome.getPanelSize()),
                                       Math.random() * 2*Math.PI
                                   ))) :
                                   LayoutUtil.V(0, 0));
@@ -75,13 +75,13 @@ public abstract class PointSampleSketch<IR, S> {
         }
 
         System.out.println(String.format("%d subsamples for %d pixels (%.1f samples/pixel)",
-                                         total_subsamples, dome.points.size(), (double)total_subsamples / dome.points.size()));
+                                         total_subsamples, dome.getNumPoints(), (double)total_subsamples / dome.getNumPoints()));
     }
 
     // Convert an xy coordinate in 'panel length' units such that the perimeter of the display area
     // is the unit circle.
     protected PVector normalizePoint(PVector p) {
-        return LayoutUtil.Vmult(p, 1. / dome.radius);
+        return LayoutUtil.Vmult(p, 1. / dome.getRadius());
     }
 
     // **OVERRIDE** (optional)

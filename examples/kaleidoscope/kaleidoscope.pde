@@ -7,8 +7,7 @@ OPC opc;
 
 void setup() {
     size(300, 300);
-    dome = new Dome(width);
-    dome.init();
+    dome = new Dome();
     opc = new OPC(this, "127.0.0.1", 7890);
     opc.setDome(dome);
     kaleido = new KaleidoscopeSketch(this ,width, dome);
@@ -23,7 +22,8 @@ void draw() {
     background(0);
     noStroke();
     for (DomeCoord c : dome.coords){
-        PVector p = dome.xyToScreen(dome.points.get(c));
+        PVector p = LayoutUtil.xyToScreen(dome.getLocation(c), width, height, 2*dome.getRadius(), true);
+        
         fill(dome.getColor(c));
            ellipse(p.x, p.y, 3, 3);
         }

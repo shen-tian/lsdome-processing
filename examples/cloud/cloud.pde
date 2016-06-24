@@ -9,8 +9,7 @@ Dome dome;
 OPC opc;
 void setup() {
     size(300, 300);
-    dome = new Dome(width);
-    dome.init();
+    dome = new Dome();
     opc = new OPC(this, "127.0.0.1", 7890);
     opc.setDome(dome);
     cloud = new CloudsSketch(this, dome, width);
@@ -21,13 +20,13 @@ void setup() {
 void draw() {
   for (DomeCoord c : dome.coords){
       
-      dome.setColor(c, cloud.samplePoint(dome.points.get(c), millis()/1000d, 0));
+      dome.setColor(c, cloud.samplePoint(dome.getLocation(c), millis()/1000d, 0));
   }
   
       background(0);
     noStroke();
     for (DomeCoord c : dome.coords){
-        PVector p = dome.xyToScreen(dome.points.get(c));
+        PVector p = LayoutUtil.xyToScreen(dome.getLocation(c), width, height, 2*dome.getRadius(), true);
         fill(dome.getColor(c));
            ellipse(p.x, p.y, 3, 3);
         }
