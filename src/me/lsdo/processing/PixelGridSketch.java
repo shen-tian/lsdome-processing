@@ -9,38 +9,42 @@ package me.lsdo.processing;
 import java.util.*;
 import processing.core.*;
 
-public abstract class PixelGridSketch<S> extends FadecandySketch<S> {
+public abstract class PixelGridSketch {
 
-    protected HashMap<DomeCoord, Integer> pixelColors;
+    protected Dome dome;
+    protected PApplet app;
+    protected OPC opc;
 
-    public PixelGridSketch(PApplet app, int size_px) {
-        super(app, size_px);
+
+    public PixelGridSketch(PApplet app, Dome dome, OPC opc) {
+        this.dome = dome;
+        this.app = app;
+        this.opc = opc;
+
+        opc.setDome(dome);
+
     }
 
+    public void draw() {
 
-    public void init() {
-        super.init();
 
-        pixelColors = new HashMap<DomeCoord, Integer>();
-        for (DomeCoord c : coords) {
-            pixelColors.put(c, 0x0);
-        }
-    }
-
-    public void draw(double t) {
         app.background(0);
-        app.loadPixels();
-        for (int i = 0; i < coords.size(); i++) {
-            setLED(i, drawPixel(coords.get(i), t));
+        app.noStroke();
+        for (DomeCoord c : dome.coords){
+            dome.setColor(c, drawPixel(c, app.millis()/1000d));
+
+            PVector p = LayoutUtil.xyToScreen(dome.getLocation(c), app.width, app.height, 2 * dome.getRadius(), true);
+            app.fill(dome.getColor(c));
+            app.ellipse(p.x, p.y, 3, 3);
         }
-        app.updatePixels();
+
+        opc.draw();
+
+        app.text("opc @" + opc.getHost(), 100, app.height - 10);
+        app.text(String.format("%.1ffps", app.frameRate), 10, app.height - 10);
+
     }
 
     protected abstract int drawPixel(DomeCoord c, double t);
-    // You can set the pixel colors in pixelColors in beforeFrame() and they will be automatically
-    // rendered here. Or, you can override drawPixel() directly.
-    //int drawPixel(DomeCoord c, double t) {
-    //    return pixelColors.get(c);
-    //}
 
 }

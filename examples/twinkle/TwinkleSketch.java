@@ -2,7 +2,7 @@ import java.util.*;
 import processing.core.*;
 import me.lsdo.processing.*;
 
-public class TwinkleSketch {
+public class TwinkleSketch extends PixelGridSketch{
 
     // Skew of initial brightness of stars. Higher means fewer bright stars.
     // >= 1.
@@ -30,16 +30,9 @@ public class TwinkleSketch {
     private HashMap<DomeCoord, Double> brightness;
     private HashMap<DomeCoord, Double> saturation;
 
-    private Dome dome;
-    private PApplet app;
-
-    public TwinkleSketch(PApplet app, Dome dome) {
-        this.dome = dome;
-        this.app = app;
-    }
-
-    public void init() {
-
+    public TwinkleSketch(PApplet app, Dome dome, OPC opc) {
+        super(app, dome, opc);
+        app.colorMode(app.HSB,256);
         brightness = new HashMap<DomeCoord, Double>();
         saturation = new HashMap<DomeCoord, Double>();
         for (DomeCoord c : dome.coords) {

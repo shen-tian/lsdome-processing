@@ -2,24 +2,14 @@ import java.util.*;
 import processing.core.*;
 import me.lsdo.processing.*;
 
-public class KaleidoscopeSketch {
+public class KaleidoscopeSketch extends PixelGridSketch {
 
-    TriCoord basePanel;
-    Dome dome;
-    PApplet app;
-    public KaleidoscopeSketch(PApplet app, int size_px, Dome dome) {
-        this.dome = dome;
-        this.app = app;
+    private TriCoord basePanel;
+    
+    public KaleidoscopeSketch(PApplet app, Dome dome, OPC opc) {
+        super(app, dome, opc);
+        app.colorMode(app.HSB,256);
         basePanel = new TriCoord(TriCoord.CoordType.PANEL, 0, 0, -1);
-    }
-
-    // start by filling in the base panel.
-    public void beforeFrame(double t) {
-        for (DomeCoord c : dome.coords) {
-            if (c.panel.equals(basePanel)) {
-                dome.setColor(c, getBasePixel(c, t));
-            }
-        }
     }
 
     // colors for the base panel. What algorithm is here?
@@ -41,14 +31,7 @@ public class KaleidoscopeSketch {
         if (flip) {
             basePx = basePx.flip(TriCoord.Axis.U);
         }
-        return dome.getColor(new DomeCoord(basePanel, basePx));
-    }
-    
-    public void draw(double t)
-    {
-        beforeFrame(t);
-        for (DomeCoord c : dome.coords){
-            dome.setColor(c, drawPixel(c, t));
-        }
+        
+        return getBasePixel(new DomeCoord(basePanel, basePx), t);
     }
 }
