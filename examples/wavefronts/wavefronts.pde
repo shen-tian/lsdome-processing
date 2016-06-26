@@ -1,3 +1,5 @@
+import me.lsdo.processing.*;
+
 class Ring
 {
   float x, y, size, intensity, hue;
@@ -35,27 +37,21 @@ class Ring
   }
 };
 
-OPC opc;
 PImage texture;
 Ring rings[];
 float smoothX, smoothY;
 boolean f = false;
+SimplestSketch simple;
 
 void setup()
 {
-  size(640, 320, P3D);
+  size(640, 640, P3D);
   colorMode(HSB, 100);
   texture = loadImage("ring.png");
 
-  opc = new OPC(this, "127.0.0.1", 7890);
-  opc.ledGrid8x8(0 * 64, width * 1/8, height * 1/4, height/16, 0, true);
-  opc.ledGrid8x8(1 * 64, width * 3/8, height * 1/4, height/16, 0, true);
-  opc.ledGrid8x8(2 * 64, width * 5/8, height * 1/4, height/16, 0, true);
-  opc.ledGrid8x8(3 * 64, width * 7/8, height * 1/4, height/16, 0, true);
-  opc.ledGrid8x8(4 * 64, width * 1/8, height * 3/4, height/16, 0, true);
-  opc.ledGrid8x8(5 * 64, width * 3/8, height * 3/4, height/16, 0, true);
-  opc.ledGrid8x8(6 * 64, width * 5/8, height * 3/4, height/16, 0, true);
-  opc.ledGrid8x8(7 * 64, width * 7/8, height * 3/4, height/16, 0, true);
+  Dome dome = new Dome();
+  OPC opc = new OPC("127.0.0.1", 7890);
+  simple = new SimplestSketch(this, dome, opc);
 
   // We can have up to 100 rings. They all start out invisible.
   rings = new Ring[100];
@@ -82,5 +78,7 @@ void draw()
   for (int i = 0; i < rings.length; i++) {
     rings[i].draw();
   }
+  
+  simple.draw();
 }
 
