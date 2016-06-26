@@ -15,23 +15,25 @@ public abstract class PixelGridSketch {
     protected PApplet app;
     protected OPC opc;
 
-
     public PixelGridSketch(PApplet app, Dome dome, OPC opc) {
+
+
         this.dome = dome;
         this.app = app;
         this.opc = opc;
 
         opc.setDome(dome);
-
     }
 
     public void draw() {
+        double t = app.millis()/1000d;
 
+        preFrame(t);
 
         app.background(0);
         app.noStroke();
         for (DomeCoord c : dome.coords){
-            dome.setColor(c, drawPixel(c, app.millis()/1000d));
+            dome.setColor(c, drawPixel(c, t));
 
             PVector p = LayoutUtil.xyToScreen(dome.getLocation(c), app.width, app.height, 2 * dome.getRadius(), true);
             app.fill(dome.getColor(c));
@@ -40,11 +42,17 @@ public abstract class PixelGridSketch {
 
         opc.draw();
 
+        app.fill(127);
+
         app.text("opc @" + opc.getHost(), 100, app.height - 10);
         app.text(String.format("%.1ffps", app.frameRate), 10, app.height - 10);
 
     }
 
     protected abstract int drawPixel(DomeCoord c, double t);
+
+    protected void preFrame(double t){
+
+    }
 
 }

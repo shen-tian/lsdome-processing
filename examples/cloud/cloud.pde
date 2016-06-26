@@ -11,10 +11,8 @@ void setup() {
     size(300, 300);
     dome = new Dome();
     opc = new OPC("127.0.0.1", 7890);
-    opc.setDome(dome);
-    cloud = new CloudsSketch(this, dome, width);
-  //cloud.init();
-  colorMode(HSB,255);
+    cloud = new CloudsSketch(this, dome, opc);
+    
 }
 
 void draw() {

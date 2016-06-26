@@ -6,7 +6,7 @@
 import processing.core.*;
 import me.lsdo.processing.*;
 
-public class CloudsSketch extends PointSampleSketch<PVector, CloudsState> {
+public class CloudsSketch extends PointSampleSketch<CloudsState> {
 
     CloudsState state;
     double last_t;
@@ -14,11 +14,11 @@ public class CloudsSketch extends PointSampleSketch<PVector, CloudsState> {
 
     double noiseScale=0.02;
 
-    CloudsSketch(PApplet app, Dome dome, int size_px) {
-        super(app, dome, size_px);
-        mode = 1;
+    public CloudsSketch(PApplet app, Dome dome, OPC opc) {
+        super(app, dome, opc);
+        mode = 0;
         
-        state = initialState();
+        app.colorMode(HSB,255);
     }
 
     protected CloudsState initialState() {
@@ -59,13 +59,7 @@ public class CloudsSketch extends PointSampleSketch<PVector, CloudsState> {
         }
     }
 
-    protected void beforeFrame(double t) {
-    }
-
-    void afterFrame(double t) {
-    }
-
-    int drawCloud(PVector p, double t) {
+    private int drawCloud(PVector p, double t) {
         // Noise patterns are symmetrical around the origin and it looks weird. Move origin to corner.
         p = LayoutUtil.Vadd(p, LayoutUtil.V(1, 1));
 
@@ -83,7 +77,7 @@ public class CloudsSketch extends PointSampleSketch<PVector, CloudsState> {
                      );
     }
 
-    int drawRing(PVector p, double t) {
+    private int drawRing(PVector p, double t) {
         // Noise patterns are symmetrical around the origin and it looks weird. Move origin to corner.
         p = LayoutUtil.Vadd(p, LayoutUtil.V(1, 1));
 
@@ -110,7 +104,7 @@ public class CloudsSketch extends PointSampleSketch<PVector, CloudsState> {
                      );
     }
 
-    double fractalNoise(double x, double y, double z) {
+    private double fractalNoise(double x, double y, double z) {
         double r = 0;
         double amp = 1.0;
         for (int octave = 0; octave < 4; octave++) {
@@ -123,11 +117,11 @@ public class CloudsSketch extends PointSampleSketch<PVector, CloudsState> {
         return r;
     }
 
-    double noise(double x) {
+    private double noise(double x) {
         return app.noise((float)x);
     }
 
-    double constrain(double x, double min, double max) {
+    private double constrain(double x, double min, double max) {
         return app.constrain((float)x, (float)min, (float)max);
     }
 

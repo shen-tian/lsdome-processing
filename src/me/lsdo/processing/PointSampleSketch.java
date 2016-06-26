@@ -12,19 +12,16 @@ import java.util.*;
 import processing.core.*;
 
 // IR is the type of the intermediate representation of the individual points to be sampled/rendered.
-public abstract class PointSampleSketch<IR, S> {
+public abstract class PointSampleSketch<S> extends PixelGridSketch {
 
     static final int DEFAULT_BASE_SUBSAMPLING = 1;
     static final int MAX_SUBSAMPLING = 64;
 
-    S state;
 
     // Mapping of display pixels to 1 or more actual samples that will be combined to yield that
     // display pixel's color.
-    HashMap<DomeCoord, ArrayList<IR>> points_ir;
+    private HashMap<DomeCoord, ArrayList<PVector>> points_ir;
 
-    Dome dome;
-    protected PApplet app;
 
     // Amount of subsampling for each display pixel.
     int base_subsampling;
@@ -33,28 +30,23 @@ public abstract class PointSampleSketch<IR, S> {
     // motion blur.
     boolean temporal_jitter;
 
-    public PointSampleSketch(PApplet app, Dome dome, int size_px) {
-        this(app, dome, size_px, DEFAULT_BASE_SUBSAMPLING, false);
-    }
-
-    public PointSampleSketch(PApplet app, Dome dome, int size_px, int base_subsampling, boolean temporal_jitter) {
-        this.base_subsampling = base_subsampling;
-        this.temporal_jitter = temporal_jitter;
-        this.dome = dome;
-        this.app = app;
+    public PointSampleSketch(PApplet app, Dome dome, OPC opc) {
+        this(app, dome, opc, DEFAULT_BASE_SUBSAMPLING, false);
     }
 
     // Assign each display pixel to N random samples based on the required amount of subsampling.
     // Furthermore, each subsample is converted to its intermediate representation to avoid
     // re-computing it every frame.
-    public void init() {
+    public PointSampleSketch(PApplet app, Dome dome, OPC opc, int base_subsampling, boolean temporal_jitter) {
+        super(app, dome, opc);
+        this.base_subsampling = base_subsampling;
+        this.temporal_jitter = temporal_jitter;
 
-
-        points_ir = new HashMap<DomeCoord, ArrayList<IR>>();
+        points_ir = new HashMap<DomeCoord, ArrayList<PVector>>();
         int total_subsamples = 0;
         for (DomeCoord c : dome.coords) {
             PVector p = dome.getLocation(c);
-            ArrayList<IR> samples = new ArrayList<IR>();
+            ArrayList<PVector> samples = new ArrayList<PVector>();
             points_ir.put(c, samples);
 
             p = normalizePoint(p);
@@ -62,21 +54,23 @@ public abstract class PointSampleSketch<IR, S> {
             boolean jitter = (num_subsamples > 1);
             for (int i = 0; i < num_subsamples; i++) {
                 PVector offset = (jitter ?
-                                  normalizePoint(LayoutUtil.polarToXy(LayoutUtil.V(
-                                      Math.random() * .5*LayoutUtil.pixelSpacing(dome.getPanelSize()),
-                                      Math.random() * 2*Math.PI
-                                  ))) :
-                                  LayoutUtil.V(0, 0));
+                        normalizePoint(LayoutUtil.polarToXy(LayoutUtil.V(
+                                Math.random() * .5*LayoutUtil.pixelSpacing(dome.getPanelSize()),
+                                Math.random() * 2*Math.PI
+                        ))) :
+                        LayoutUtil.V(0, 0));
                 PVector sample = LayoutUtil.Vadd(p, offset);
-                samples.add(toIntermediateRepresentation(sample));
+                samples.add(sample);
             }
 
             total_subsamples += num_subsamples;
         }
 
         System.out.println(String.format("%d subsamples for %d pixels (%.1f samples/pixel)",
-                                         total_subsamples, dome.getNumPoints(), (double)total_subsamples / dome.getNumPoints()));
+                total_subsamples, dome.getNumPoints(), (double)total_subsamples / dome.getNumPoints()));
+
     }
+
 
     // Convert an xy coordinate in 'panel length' units such that the perimeter of the display area
     // is the unit circle.
@@ -91,21 +85,13 @@ public abstract class PointSampleSketch<IR, S> {
         return 1.;
     }
 
-    // **OVERRIDE** (optional)
-    // Convert an xy point to be sampled into an intermediate representation, if it would save work
-    // that would otherwise be re-computed each frame. E.g., this is a good place to do texture
-    // mapping.
-    IR toIntermediateRepresentation(PVector p) {
-        // Default implementation assumes IR is PVector
-        return (IR)p;
-    }
 
     protected int drawPixel(DomeCoord c, double t) {
         return sampleAntialiased(points_ir.get(c), t);
     }
 
     // Perform the anti-aliasing for a single display pixel.
-    int sampleAntialiased(ArrayList<IR> sub, double t) {
+    int sampleAntialiased(ArrayList<PVector> sub, double t) {
         int[] samples = new int[sub.size()];
         for (int i = 0; i < sub.size(); i++) {
             double t_jitter = (temporal_jitter ? (Math.random() - .5) / app.frameRate : 0.);
@@ -116,7 +102,7 @@ public abstract class PointSampleSketch<IR, S> {
 
     // Render an individual sample. 't' is clock time, including temporal jitter. 't_jitter' is the
     // amount of jitter added. Return a color.
-    protected abstract int samplePoint(IR ir, double t, double t_jitter);
+    protected abstract int samplePoint(PVector ir, double t, double t_jitter);
 
     int blendSamples(int[] samples) {
         int blended = samples[0];
