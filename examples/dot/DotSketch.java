@@ -4,7 +4,7 @@ import me.lsdo.processing.*;
 
 public class DotSketch extends CanvasSketch {
 
-   PImage dot; 
+    private PImage dot; 
     
     public DotSketch(PApplet app, Dome dome, OPC opc) {
         super(app, dome, opc);
