@@ -39,10 +39,12 @@ public abstract class CanvasSketch {
 
         opc.draw();
 
-        app.fill(127);
+        app.fill(127f, 256f);
 
         app.text("opc @" + opc.getHost(), 100, app.height - 10);
         app.text(String.format("%.1ffps", app.frameRate), 10, app.height - 10);
+
+
     }
 
     public abstract void paint();
