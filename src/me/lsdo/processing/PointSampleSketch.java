@@ -12,7 +12,7 @@ import java.util.*;
 import processing.core.*;
 
 // IR is the type of the intermediate representation of the individual points to be sampled/rendered.
-public abstract class PointSampleSketch<S> extends PixelGridSketch {
+public abstract class PointSampleSketch extends PixelGridSketch {
 
     static final int DEFAULT_BASE_SUBSAMPLING = 1;
     static final int MAX_SUBSAMPLING = 64;
