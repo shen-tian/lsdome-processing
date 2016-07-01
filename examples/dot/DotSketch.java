@@ -17,7 +17,12 @@ public class DotSketch extends CanvasSketch {
       app.background(0);
 
       // Draw the image, centered at the mouse location
-      float dotSize = (float)(app.height * 0.7);
+      float dotSize = (float)(app.height * 0.33);
       app.image(dot, app.mouseX - dotSize/2, app.mouseY - dotSize/2, dotSize, dotSize);
+      
+      app.ellipseMode(app.CENTER);
+      app.fill(40, 180, 256);
+      app.noStroke();
+      app.ellipse(app.width - app.mouseX, app.height - app.mouseY, dotSize / 4, dotSize / 4);
    }
 }
