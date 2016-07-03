@@ -1,6 +1,6 @@
 package me.lsdo.processing;
 
-import processing.core.PGraphics;
+import processing.core.*;
 
 /**
  * Created by shen on 2016/06/28.
@@ -22,6 +22,7 @@ public abstract class DomeAnimation {
         this.opc = opc;
 
         this.graphics = new PGraphics();
+        graphics.colorMode(PApplet.HSB,255);
         opc.setDome(dome);
     }
 
@@ -49,5 +50,9 @@ public abstract class DomeAnimation {
 
     protected void preFrame(double t){
 
+    }
+
+    protected int getHsbColor(int hue, int saturation, int brightness) {
+        return graphics.color(hue, saturation, brightness);
     }
 }

@@ -8,7 +8,6 @@ public class KaleidoscopeSketch extends DomeAnimation {
     
     public KaleidoscopeSketch(Dome dome, OPC opc) {
         super(dome, opc);
-        graphics.colorMode(PApplet.HSB,256);
         basePanel = new TriCoord(TriCoord.CoordType.PANEL, 0, 0, -1);
     }
 
@@ -18,7 +17,7 @@ public class KaleidoscopeSketch extends DomeAnimation {
         p = LayoutUtil.Vrot(p, t * (.5 + 3*.5*(Math.cos(.1213*t)+1)));
         p = LayoutUtil.Vmult(p, 1/(1 + 5*.5*(Math.cos(.3025*t)+1)));
         p = LayoutUtil.Vadd(p, LayoutUtil.V(2*Math.cos(.2*t), 0));
-        return graphics.color((int)(MathUtil.fmod(p.x + .4081*t, 1.) * 255), (int)(.6 * 255), (int)(.5*(Math.cos(40*p.x)+1) * 255));
+        return getHsbColor((int)(MathUtil.fmod(p.x + .4081*t, 1.) * 255), (int)(.6 * 255), (int)(.5*(Math.cos(40*p.x)+1) * 255));
     }
 
     // This is the kaleidoscope effect. Depending on which panel, flip/rotate.

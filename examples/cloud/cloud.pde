@@ -4,17 +4,16 @@
  */
 import me.lsdo.processing.*;
 
-CloudsSketch cloud;
+PixelGridSketch sketch;
 
 void setup() {
     size(300, 300);
     Dome dome = new Dome();
     OPC opc = new OPC("127.0.0.1", 7890);
-    cloud = new CloudsSketch(this, dome, opc);
+    DomeAnimation animation = new CloudsSketch(dome, opc);
+    sketch = new PixelGridSketch(this, animation);
 }
 
 void draw() {
-      cloud.draw(); 
+    sketch.draw();
 }
-
-

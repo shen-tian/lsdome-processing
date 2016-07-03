@@ -12,7 +12,7 @@ import java.util.*;
 import processing.core.*;
 
 // IR is the type of the intermediate representation of the individual points to be sampled/rendered.
-public abstract class PointSampleSketch extends PixelGridSketch {
+public abstract class XYAnimation extends DomeAnimation {
 
     static final int DEFAULT_BASE_SUBSAMPLING = 1;
     static final int MAX_SUBSAMPLING = 64;
@@ -30,15 +30,15 @@ public abstract class PointSampleSketch extends PixelGridSketch {
     // motion blur.
     boolean temporal_jitter;
 
-    public PointSampleSketch(PApplet app, Dome dome, OPC opc) {
-        this(app, dome, opc, DEFAULT_BASE_SUBSAMPLING, false);
+    public XYAnimation(Dome dome, OPC opc) {
+        this(dome, opc, DEFAULT_BASE_SUBSAMPLING, false);
     }
 
     // Assign each display pixel to N random samples based on the required amount of subsampling.
     // Furthermore, each subsample is converted to its intermediate representation to avoid
     // re-computing it every frame.
-    public PointSampleSketch(PApplet app, Dome dome, OPC opc, int base_subsampling, boolean temporal_jitter) {
-        super(app, null);
+    public XYAnimation(Dome dome, OPC opc, int base_subsampling, boolean temporal_jitter) {
+        super(dome, opc);
         this.base_subsampling = base_subsampling;
         this.temporal_jitter = temporal_jitter;
 
@@ -75,7 +75,7 @@ public abstract class PointSampleSketch extends PixelGridSketch {
     // Convert an xy coordinate in 'panel length' units such that the perimeter of the display area
     // is the unit circle.
     protected PVector normalizePoint(PVector p) {
-        return LayoutUtil.Vmult(p, 1. / animation.getDome().getRadius());
+        return LayoutUtil.Vmult(p, 1. / dome.getRadius());
     }
 
     // **OVERRIDE** (optional)
@@ -94,7 +94,8 @@ public abstract class PointSampleSketch extends PixelGridSketch {
     int sampleAntialiased(ArrayList<PVector> sub, double t) {
         int[] samples = new int[sub.size()];
         for (int i = 0; i < sub.size(); i++) {
-            double t_jitter = (temporal_jitter ? (Math.random() - .5) / app.frameRate : 0.);
+            // Probably not right. The 60 used to read app.framerate
+            double t_jitter = (temporal_jitter ? (Math.random() - .5) / 60 : 0.);
             samples[i] = samplePoint(sub.get(i), t + t_jitter, t_jitter);
         }
         return blendSamples(samples);
@@ -108,7 +109,7 @@ public abstract class PointSampleSketch extends PixelGridSketch {
         int blended = samples[0];
         for (int i = 1; i < samples.length; i++) {
             //TODO what colorspace does fadecandy use?
-            blended = app.lerpColor(blended, samples[i], (float)(1. / (1. + i)));
+            blended = graphics.lerpColor(blended, samples[i], (float)(1. / (1. + i)));
         }
         return blended;
     }

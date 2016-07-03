@@ -32,7 +32,6 @@ public class TwinkleSketch extends DomeAnimation{
 
     public TwinkleSketch(Dome dome, OPC opc) {
         super(dome, opc);
-        graphics.colorMode(PApplet.HSB,256);
         brightness = new HashMap<DomeCoord, Double>();
         saturation = new HashMap<DomeCoord, Double>();
         for (DomeCoord c : dome.coords) {
@@ -58,7 +57,7 @@ public class TwinkleSketch extends DomeAnimation{
         double maxsat = MAX_SAT_FULL_BRIGHTNESS + (1 - MAX_SAT_FULL_BRIGHTNESS) * Math.pow(1 - b, SAT_V_BRIGHTNESS_POWER_LAW);
         sat *= maxsat;
 
-        return graphics.color((int)(HUE * 255), (int)(sat * 255), (int)(b * 255));
+        return getHsbColor((int)(HUE * 255), (int)(sat * 255), (int)(b * 255));
     }
 
 }

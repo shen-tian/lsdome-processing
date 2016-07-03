@@ -6,7 +6,7 @@
 import processing.core.*;
 import me.lsdo.processing.*;
 
-public class CloudsSketch extends PointSampleSketch {
+public class CloudsSketch extends XYAnimation {
 
     int mode;
     
@@ -17,14 +17,16 @@ public class CloudsSketch extends PointSampleSketch {
     double last_t;
 
     double noiseScale=0.02;
+    
+    PApplet app;
 
-    public CloudsSketch(PApplet app, Dome dome, OPC opc) {
-        super(app, dome, opc);
+    public CloudsSketch(Dome dome, OPC opc) {
+        super(dome, opc);
         mode = 0;
         
         dx = dy = dz = 0;
         
-        app.colorMode(app.HSB,255);
+        app = new PApplet();
     }
 
     protected void preFrame(double t) {
@@ -51,7 +53,7 @@ public class CloudsSketch extends PointSampleSketch {
         double n = fractalNoise(dx + p.x*scale, dy + p.y*scale, z) - 0.75;
         double m = fractalNoise(dx + p.x*scale, dy + p.y*scale, z + 10.0) - 0.75;
                     
-        return app.color(
+        return getHsbColor(
                      (int)(255 * MathUtil.fmod(hue + .8 * m, 1.)), 
                      (int)(255 * (1. - constrain(Math.pow(3.0 * n, 3.5), 0, 0.9))), 
                      (int)(255 * constrain(Math.pow(3.0 * n, 1.5), 0, 0.9))
