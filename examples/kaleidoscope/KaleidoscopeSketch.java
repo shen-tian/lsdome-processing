@@ -2,7 +2,7 @@ import java.util.*;
 import processing.core.*;
 import me.lsdo.processing.*;
 
-public class KaleidoscopeSketch extends PixelGridAnimation {
+public class KaleidoscopeSketch extends DomeAnimation {
 
     private TriCoord basePanel;
     

@@ -2,7 +2,7 @@ import java.util.*;
 import processing.core.*;
 import me.lsdo.processing.*;
 
-public class TwinkleSketch extends PixelGridAnimation{
+public class TwinkleSketch extends DomeAnimation{
 
     // Skew of initial brightness of stars. Higher means fewer bright stars.
     // >= 1.

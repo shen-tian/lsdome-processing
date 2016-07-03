@@ -1,19 +1,21 @@
 package me.lsdo.processing;
 
-import processing.core.PApplet;
 import processing.core.PGraphics;
-import processing.core.PVector;
 
 /**
  * Created by shen on 2016/06/28.
+ *
+ * THis forms the basis for a dome animation.
+ *
+ * TODO: using PGraphics for color right now. Not sure that's neccesarry.
  */
-public abstract class PixelGridAnimation {
+public abstract class DomeAnimation {
     protected Dome dome;
     protected OPC opc;
 
     protected PGraphics graphics;
 
-    public PixelGridAnimation(Dome dome, OPC opc) {
+    public DomeAnimation(Dome dome, OPC opc) {
 
 
         this.dome = dome;

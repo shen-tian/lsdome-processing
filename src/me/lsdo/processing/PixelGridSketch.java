@@ -6,15 +6,14 @@
 
 package me.lsdo.processing;
 
-import java.util.*;
 import processing.core.*;
 
 public class PixelGridSketch {
 
     protected PApplet app;
-    protected PixelGridAnimation animation;
+    protected DomeAnimation animation;
 
-    public PixelGridSketch(PApplet app, PixelGridAnimation animation) {
+    public PixelGridSketch(PApplet app, DomeAnimation animation) {
 
         this.app = app;
         this.animation = animation;
@@ -22,6 +21,7 @@ public class PixelGridSketch {
 
     public void draw() {
         double t = app.millis()/1000d;
+
         animation.draw(t);
 
         app.background(0);
