@@ -2,11 +2,13 @@
 
 import me.lsdo.processing.*;
 
-TwinkleSketch twinkle;
+PixelGridSketch twinkle;
 
 void setup() {
     size(300, 300);
-    twinkle = new TwinkleSketch(this, new Dome(), new OPC("127.0.0.1", 7890));
+    Dome dome = new Dome();
+    OPC opc = new OPC("127.0.0.1", 7890);
+    twinkle = new PixelGridSketch(this, new TwinkleSketch(dome, opc));
 }
 
 void draw() {
