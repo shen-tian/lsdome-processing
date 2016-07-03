@@ -38,7 +38,7 @@ public abstract class PointSampleSketch extends PixelGridSketch {
     // Furthermore, each subsample is converted to its intermediate representation to avoid
     // re-computing it every frame.
     public PointSampleSketch(PApplet app, Dome dome, OPC opc, int base_subsampling, boolean temporal_jitter) {
-        super(app, dome, opc);
+        super(app, null);
         this.base_subsampling = base_subsampling;
         this.temporal_jitter = temporal_jitter;
 
@@ -75,7 +75,7 @@ public abstract class PointSampleSketch extends PixelGridSketch {
     // Convert an xy coordinate in 'panel length' units such that the perimeter of the display area
     // is the unit circle.
     protected PVector normalizePoint(PVector p) {
-        return LayoutUtil.Vmult(p, 1. / dome.getRadius());
+        return LayoutUtil.Vmult(p, 1. / animation.getDome().getRadius());
     }
 
     // **OVERRIDE** (optional)
