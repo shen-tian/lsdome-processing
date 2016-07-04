@@ -14,7 +14,7 @@ public class DotSketch extends CanvasSketch {
     }
 
    public void paint(){
-      app.background(0);
+      app.background(0, 127);
 
       // Draw the image, centered at the mouse location
       float dotSize = (float)(app.height * 0.33);

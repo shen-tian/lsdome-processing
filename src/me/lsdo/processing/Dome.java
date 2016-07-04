@@ -42,6 +42,10 @@ public class Dome {
         radius =LayoutUtil.getPanelConfig(Config.PARTIAL_LAYOUT ?
                 Config.FULL_PANEL_LAYOUT :
                 Config.PANEL_LAYOUT).radius;
+
+        for (DomeCoord c : coords)
+            setColor(c, 0);
+
     }
 
     public Integer getColor(DomeCoord dCoord){

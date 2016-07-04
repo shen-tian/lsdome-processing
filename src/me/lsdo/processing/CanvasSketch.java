@@ -1,6 +1,7 @@
 package me.lsdo.processing;
 
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import processing.core.PVector;
 
 /**
@@ -41,7 +42,10 @@ public abstract class CanvasSketch {
                 samples[i] = app.pixels[sampleLocation];
             }
 
-            dome.setColor(c, blendSamples(samples));
+
+            int output = blurr(dome.getColor(c), blendSamples(samples));
+
+            dome.setColor(c, output);
         }
 
         for (DomeCoord c : dome.coords){
@@ -59,6 +63,33 @@ public abstract class CanvasSketch {
         app.text(String.format("%.1ffps", app.frameRate), 10, app.height - 10);
 
 
+    }
+
+    private int blurr(int c1, int c2){
+        float factor = .9f;
+
+        int B_MASK = 255;
+        int G_MASK = 255<<8; //65280
+        int R_MASK = 255<<16; //16711680
+
+        int r1 = (c1 & R_MASK)>>16;
+        int g1 = (c1 & G_MASK)>>8;
+        int b1 = c1 & B_MASK;
+
+        int r2 = (c2 & R_MASK)>>16;
+        int g2 = (c2 & G_MASK)>>8;
+        int b2 = c2 & B_MASK;
+
+        byte r = (byte)Math.max((int)(factor * r1), r2);
+        byte g = (byte)Math.max((int)(factor * g1), g2);
+        byte b = (byte)Math.max((int)(factor * b1), b2);
+
+        return getColor(r, g, b, (byte)255);
+
+    }
+
+    private int getColor(byte r, byte g, byte b, byte alpha){
+        return b + (g << 8) + (r << 16) + (alpha << 24);
     }
 
     private int blendSamples(int[] samples) {

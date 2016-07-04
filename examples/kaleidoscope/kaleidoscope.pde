@@ -1,19 +1,15 @@
 import me.lsdo.processing.*;
 
-PixelGridSketch kaleido;
-KaleidoscopeSketch sketch;
+PixelGridSketch sketch;
 
 void setup() {
-    size(300, 300);
+    size(450, 450);
     Dome dome = new Dome();
     OPC opc = new OPC("127.0.0.1", 7890);
-    sketch = new KaleidoscopeSketch(dome, opc);
-    kaleido = new PixelGridSketch(this, sketch);
+    DomeAnimation animation = new KaleidoscopeSketch(dome, opc);
+    sketch = new PixelGridSketch(this, animation);
 }
 
 void draw() {
-    kaleido.draw();
-    //double t = millis()/1000f;
-    //sketch.draw(t);
-    
+    sketch.draw();
 }
