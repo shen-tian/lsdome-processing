@@ -65,6 +65,7 @@ public abstract class CanvasSketch {
 
     }
 
+    // TODO: this is messy as hell, and has a constant fade factor.
     private int blurr(int c1, int c2){
         float factor = .9f;
 
@@ -88,6 +89,7 @@ public abstract class CanvasSketch {
 
     }
 
+    // Thing this is right, and doesn't depend on Processing.
     private int getColor(byte r, byte g, byte b, byte alpha){
         return b + (g << 8) + (r << 16) + (alpha << 24);
     }

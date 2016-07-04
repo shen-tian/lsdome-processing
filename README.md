@@ -22,48 +22,57 @@ allows easier use of animations that specifically takes advantage of this geomet
 Potential future goal: define a container that allows sketches to be put into
 an animation playlist of sorts.
 
-## Build/Testing
+## Build/Install
 
-Gradle is working. Go
+Need to flash out, but in short:
 
-    gradle build
+1. `git clone` somewhere.
+2. `./gradlew build` to build. This puts `lsdome.jar` in `build/libs/`
+3. Copy `lsdome.jar` into `\library`.
+4. Well done. Now this directory fits the Processing Contributed library format.
+Place it in your library folder.
 
-and find the jar file in `build\libs`. Will figure out a better
-solution later. This all runs on travis-ci too. Click the badge at top of this
-file to go see what's happening there.
+## Use
 
-### Manual build
+### Simple
 
-To build the code, have a look at `src\build.sh`. It's dependent on both the
-location of processing 2.2.1 jar files, but also on where the processing Libraries
-are stored.
+Simplest is `SimpleSketch`. This gives you the shortest path to porting an existing
+sketch to the dome.
 
-The rough steps are:
+Simple add these lines:
 
-1. Build the library code;
-2. JAR the whole lot into `lsdome.jar`;
-3. Deploy the whole library directory into the processing folder.
+    import me.lsdo.processing.*;
+    SimplestSketch sketch;
 
-## Using this
+to near the top of the file. Then, to the `setup` method, add
 
-For here, the library is available to all sketches, written and ran through the
-Processing IDE. Just include:
+    sketch = new SimplestSketch(this, new Dome(), new OPC("127.0.0.1", 7890));
 
-    import me.lsdo.processing.* ;
+and to the end of the `draw` method:
 
-on the top of the `.pde` files. Yup. That's the package name. Following naming
-standard like a pro.
+    sketch.draw();
 
-While doing dev on the library, it might be a good idea to either:
+have a look at the `dot` example to see this in action. What this does is to sample
+directly from the sketch, after is has been rendered. It applies a bit of
+anti-aliasing and motion blur to smooth things out.
 
-* `git clone` into the processing libraries folder, and work from there.
-* work in whatever folder, but have an easy way to copy output to the processing
-folder to test the build.
+### XY Animation
 
-Later, we might want some CI/testing, and create a zip of the deployable library.
-one day.
+This mode is for when you render a scene via its XY coorodinate. In essence. You'll
+be implementing the function (pseudocode):
 
-## Design Notes
+    color drawScene(int xCoord, int yCoord, int time)
+
+Have a look at the `Cloud` example for how this works. It doesn't actually use
+X and Y coordinates, but a PVector. The color is calculated, and then drawn onto
+the Sketch.
+
+### Dome Animation
+
+This mode is when you are working with the Dome directly. That way, you can play
+with the funky UVW co-ordinate system. See `Kaleidoscope` for a good example.
+
+## Design Notes (Legacy)
 
 The general idea, I think, is that:
 
