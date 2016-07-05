@@ -27,10 +27,8 @@ an animation playlist of sorts.
 Need to flash out, but in short:
 
 1. `git clone` somewhere.
-2. `./gradlew build` to build. This puts `lsdome.jar` in `build/libs/`
-3. Copy `lsdome.jar` into `\library`.
-4. Well done. Now this directory fits the Processing Contributed library format.
-Place it in your library folder.
+2. `./gradlew makeArtifact` to build. This creates `lsdome-processing.zip` in `\build\distributions\`.
+3. Unzip the contents into your Processing `libraries` folder.
 
 ## Use
 
