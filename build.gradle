@@ -3,7 +3,7 @@ apply plugin: 'java'
 sourceSets {
     main {
         java {
-            srcDir 'src'
+            srcDir 'src/main/'
         }
     }
 
@@ -34,4 +34,9 @@ dependencies {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.13'
+}
+
+task copyJar(type: Copy) {
+    from 'build/libs/'
+    into 'library/'
 }
