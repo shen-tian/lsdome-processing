@@ -1,19 +1,5 @@
 apply plugin: 'java'
 
-sourceSets {
-    main {
-        java {
-            srcDir 'src/main/'
-        }
-    }
-
-    test {
-        java {
-            srcDir 'src/test'
-        }
-    }
-}
-
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
 
@@ -23,7 +9,7 @@ jar {
 
 // need the core Processing library to build.
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
 dependencies {

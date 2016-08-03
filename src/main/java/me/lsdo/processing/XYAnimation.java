@@ -14,6 +14,9 @@ import processing.core.*;
 // IR is the type of the intermediate representation of the individual points to be sampled/rendered.
 public abstract class XYAnimation extends DomeAnimation {
 
+
+    protected PGraphics graphics;
+
     static final int DEFAULT_BASE_SUBSAMPLING = 1;
     static final int MAX_SUBSAMPLING = 64;
 
@@ -39,6 +42,11 @@ public abstract class XYAnimation extends DomeAnimation {
     // re-computing it every frame.
     public XYAnimation(Dome dome, OPC opc, int base_subsampling, boolean temporal_jitter) {
         super(dome, opc);
+
+
+        this.graphics = new PGraphics();
+        graphics.colorMode(PApplet.HSB,255);
+
         this.base_subsampling = base_subsampling;
         this.temporal_jitter = temporal_jitter;
 

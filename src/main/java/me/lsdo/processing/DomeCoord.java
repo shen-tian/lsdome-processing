@@ -1,8 +1,5 @@
 package me.lsdo.processing;
 
-import java.util.*;
-import me.lsdo.*;
-
 // Representation of a coordinate within the dome pixel grid. See TriCoord.java for more info.
 
 public class DomeCoord {
