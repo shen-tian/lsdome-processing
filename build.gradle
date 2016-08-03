@@ -1,11 +1,9 @@
-apply plugin: 'java'
-
-sourceCompatibility = 1.6
-targetCompatibility = 1.6
-
-jar {
-    baseName = 'lsdome'
+plugins {
+    id "com.jfrog.bintray" version "1.7"
 }
+
+apply plugin: 'java'
+apply plugin: 'maven-publish'
 
 // need the core Processing library to build.
 repositories {
@@ -15,7 +13,70 @@ repositories {
 dependencies {
     compile "org.processing:core:2.2.1"
     compile "junit:junit:3.8.2"
+}
 
+group = 'me.lsdo.processing'
+version = '0.0.0'
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+// custom tasks for creating source/javadoc jars
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+// add javadoc/source jar tasks as artifacts
+artifacts {
+    archives sourcesJar, javadocJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            if (plugins.hasPlugin('war')) {
+                from components.web
+            } else {
+                from components.java
+            }
+
+            artifact sourcesJar
+            artifact javadocJar
+        }
+    }
+}
+
+
+bintray {
+    user = 'shen-tian'
+    key = 'cb19bca2b94bbe51212f8668744b2e5f3eb61525'
+
+    publications = ['mavenJava']
+
+    pkg {
+        repo = 'maven'
+        name = 'lsdome-processing'
+        userOrg = 'shen-tian'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/shen-tian/lsdome-processing.git'
+
+        version {
+            name = '0.0.0'
+            desc = 'LSDome Processing lib'
+            vcsTag = '0.0.0'
+            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+            publish = true
+        }
+    }
+}
+
+jar {
+    baseName = 'lsdome-processing'
 }
 
 task wrapper(type: Wrapper) {
@@ -29,7 +90,7 @@ task copyJar(type: Copy, dependsOn: build) {
 
 task makeArtifact(type: Zip, dependsOn: copyJar){
     archiveName = 'lsdome-processing.zip'
-    into 'lsdome'
+    into 'lsdome-processing'
 
     from projectDir
     include 'src/**/*'
