@@ -1,11 +1,14 @@
 # lsdome library for Processing
 
 [![Build Status](https://travis-ci.org/shen-tian/lsdome-processing.svg?branch=master)](https://travis-ci.org/shen-tian/lsdome-processing)
+[![Download](https://api.bintray.com/packages/shen-tian/maven/lsdome-processing/images/download.svg) ](https://bintray.com/shen-tian/maven/lsdome-processing/_latestVersion)
 
-Processing Library for [Limitless Slip Dome](https://github.com/shen-tian/l-s-dome).
-This uses the correct format for Processing [Contributed Libraries]
-(https://github.com/processing/processing/wiki/How-to-Install-a-Contributed-Library). It still
-targets Processing 2.2.1, thus Java 1.6. Not sure if it will change.
+This is a Processing Library for [Limitless Slip Dome](https://github.com/shen-tian/l-s-dome).
+This uses the correct format for Processing [Contributed Libraries](https://github.com/processing/processing/wiki/How-to-Install-a-Contributed-Library).
+Note that this targets Processing 2. No idea if/when we'll support Processing 3.
+
+It can also be used as a straight forward Java library, if you'd prefer to not use the standard Java tools, or as
+someone put it, "avoid the arty bullshit language that doesn't make sense".
 
 ## Goals
 
@@ -19,16 +22,47 @@ useful for sketches which are indifferent to pixel layout; it also
 allows easier use of animations that specifically takes advantage of this geometry
  (see `kaleidoscope`).
 
-Potential future goal: define a container that allows sketches to be put into
-an animation playlist of sorts.
-
 ## Build/Install
 
-Need to flash out, but in short:
+There's two main ways of using the library: as a Processing Contributed library, or as a Java library.
+
+### Processing
+
+The process is slightly manual. But we don't want to deal with Processing's library publishing stuff. Instructions
+work on Linux and macOS. Something similar should work in Windows.
 
 1. `git clone` somewhere.
 2. `./gradlew makeArtifact` to build. This creates `lsdome-processing.zip` in `\build\distributions\`.
-3. Unzip the contents into your Processing `libraries` folder.
+3. Unzip the contents into your Processing `libraries` folder. This seems to be the `~\Documents\Processing\libraries`
+folder on macOS. Restart Processing IDE and you are good.
+
+### Plain Java
+
+The library is published at the Maven repo on _jcenter_. If you are using Gradle:
+
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        compile 'me.lsdo.processing:lsdome-processing:0.0.1'
+        }
+
+in the right place in your `gradle.build`. If you are using Leiningen:
+
+    :repositories [["jcenter" {:url "http://jcenter.bintray.com"}]]
+    :dependencies [
+        [me.lsdo.processing/lsdome-processing "0.0.1"]]
+
+in your `project.clj` should do the trick.
+
+### Building the JAR yourself
+
+If you need to do this,
+
+    gradle build
+
+builds the JAR and places it in `/build/ibs/`.
 
 ## Use
 
