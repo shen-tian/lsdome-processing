@@ -62,7 +62,7 @@ bintray {
         repo = 'maven'
         name = 'lsdome-processing'
         userOrg = 'shen-tian'
-        licenses = ['Apache-2.0']
+        licenses = ['The MIT License (MIT)']
         vcsUrl = 'https://github.com/shen-tian/lsdome-processing.git'
 
         version {
