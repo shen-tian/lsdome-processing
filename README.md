@@ -1,14 +1,15 @@
 # lsdome library for Processing
 
 [![Build Status](https://travis-ci.org/shen-tian/lsdome-processing.svg?branch=master)](https://travis-ci.org/shen-tian/lsdome-processing)
-[![Download](https://api.bintray.com/packages/shen-tian/maven/lsdome-processing/images/download.svg) ](https://bintray.com/shen-tian/maven/lsdome-processing/_latestVersion)
+[![Download](https://api.bintray.com/packages/shen-tian/maven/lsdome-processing/images/download.svg)](https://bintray.com/shen-tian/maven/lsdome-processing/_latestVersion)
 
 This is a Processing Library for [Limitless Slip Dome](https://github.com/shen-tian/l-s-dome).
 This uses the correct format for Processing [Contributed Libraries](https://github.com/processing/processing/wiki/How-to-Install-a-Contributed-Library).
 Note that this targets Processing 2. No idea if/when we'll support Processing 3.
 
-It can also be used as a straight forward Java library, if you'd prefer to not use the standard Java tools, or as
-someone put it, "avoid the arty bullshit language that doesn't make sense".
+It can also be used as a straight forward Java library, if you'd prefer to not
+use the standard Java tools, or as someone put it, "avoid the arty bullshit
+language that doesn't make sense".
 
 ## Goals
 
@@ -16,8 +17,8 @@ Make it easy to target the Limitless Slip Dome, with its particular geometry,
 over [Open Pixel Control](http://openpixelcontrol.org/). Note that this is
 not actually dependent on use of Fadecady controller boards.
 
-This helps with two related aspects that are non-trivial: laying out of the pixels
-in the triangular pattern, mirroring the physical wiring of the dome. This is most
+This helps with two related aspects that are non-trivial: laying out of the
+pixels in the triangular pattern, mirroring the physical wiring of the dome. This is most
 useful for sketches which are indifferent to pixel layout; it also
 allows easier use of animations that specifically takes advantage of this geometry
  (see `kaleidoscope`).

@@ -20,7 +20,6 @@ public class OPC implements Runnable {
 
     private Dome dome;
 
-    private int[] pixelBuffer;
     private byte[] packetData;
     private byte firmwareConfig;
     private String colorCorrection;
@@ -174,7 +173,7 @@ public class OPC implements Runnable {
         int ledAddress = 4;
 
 
-        pixelBuffer = new int[numPixels];
+        int[] pixelBuffer = new int[numPixels];
         //setPixelCount(numPixels);
         //app.loadPixels();
 

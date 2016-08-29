@@ -6,6 +6,7 @@ import processing.data.*;
 
 enum PanelLayout {
     _2,
+    _6,
     _13,
     _24
 }
@@ -217,6 +218,19 @@ public class LayoutUtil {
                 return fillFan(0, 2, n);
             }
         };
+
+    public static PanelConfig _6 = new PanelConfig(6,
+                                            1.,
+                                            new int[] {4, 2},
+                                            V(0, 0.), 0.) {
+            ArrayList<DomeCoord> fill(int n) {
+                ArrayList<DomeCoord> points = new ArrayList<DomeCoord>();
+                points.addAll(fillFan(4, 4, n, V(-1, 1)));
+                points.addAll(fillFan(5, 2, n, V(-1, 1)));
+                return points;
+            }
+        };
+
     public static PanelConfig _13 = new PanelConfig(13,
                                              Math.sqrt(7/3.),  // just trust me
                                              new int[] {4, 4, 4, 1},
@@ -248,6 +262,8 @@ public class LayoutUtil {
         switch (config) {
         case _2:
             return _2;
+        case _6:
+            return _6;
         case _13:
             return _13;
         case _24:
@@ -264,16 +280,16 @@ public class LayoutUtil {
 
         for (int i = 0; i < points.size(); i++) {
 
-        JSONObject point = new JSONObject();
+            JSONObject point = new JSONObject();
 
-        float[] coordinates = new float[3];
-        coordinates[0] = 2 * points.get(i).x;
-        coordinates[1] = 2 * points.get(i).y;
-        coordinates[2] = 2 * points.get(i).z;
+            float[] coordinates = new float[3];
+            coordinates[0] = 2 * points.get(i).x;
+            coordinates[1] = 2 * points.get(i).y;
+            coordinates[2] = 2 * points.get(i).z;
 
-        point.setJSONArray("point", new JSONArray(new FloatList(coordinates)));
+            point.setJSONArray("point", new JSONArray(new FloatList(coordinates)));
 
-        values.setJSONObject(i, point);
+            values.setJSONObject(i, point);
       }
 
       app.saveJSONArray(values, fileName);

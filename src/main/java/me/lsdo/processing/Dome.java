@@ -29,12 +29,23 @@ public class Dome {
     // Distance from center to farthest pixel, in panel lengths
     private double radius;
 
-    public Dome() {
+    public Dome () {
+        this(13);
+    }
+
+    public Dome(int layout) {
 
         // e.g. 15
         panel_size = Config.PANEL_SIZE;
 
-        LayoutUtil.PanelConfig config = LayoutUtil.getPanelConfig(Config.PANEL_LAYOUT);
+        LayoutUtil.PanelConfig config;
+        if (layout == 13)
+            config = LayoutUtil.getPanelConfig(PanelLayout._13);
+        else if (layout == 6)
+            config = LayoutUtil.getPanelConfig(PanelLayout._6);
+        else
+            config = LayoutUtil.getPanelConfig(PanelLayout._2);
+
         coords = config.fill(panel_size);
         points = config.coordsToXy(coords);
         colors = new HashMap<DomeCoord, Integer>();

@@ -4,6 +4,8 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PVector;
 
+import java.util.ArrayList;
+
 /**
  * Created by shen on 2016/06/26.
  */
@@ -100,6 +102,16 @@ public abstract class CanvasSketch {
             blended = app.lerpColor(blended, samples[i], 1f / (1f + i));
         }
         return blended;
+    }
+
+    public void writeLayoutJson(){
+
+        ArrayList<PVector> xy = new ArrayList<PVector>();
+        for (DomeCoord c : dome.coords) {
+            xy.add(dome.getLocation(c));
+        }
+
+        LayoutUtil.generateOPCSimLayout(xy, app, "layout.json");
     }
 
     public abstract void paint();
