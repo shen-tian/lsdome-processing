@@ -8,7 +8,7 @@
 package me.lsdo.processing;
 
 import java.util.*;
-import processing.core.*;
+import processing.core.PVector;
 
 public class Dome {
 

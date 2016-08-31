@@ -1,8 +1,10 @@
 package me.lsdo.processing;
 
 import java.util.*;
-import processing.core.*;
+import processing.core.PVector;
+// Needed for JSON stuff
 import processing.data.*;
+import processing.core.PApplet;
 
 enum PanelLayout {
     _2,

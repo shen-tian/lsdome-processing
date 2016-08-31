@@ -6,7 +6,8 @@
 
 package me.lsdo.processing;
 
-import processing.core.*;
+import processing.core.PApplet;
+import processing.core.PVector;
 
 public class PixelGridSketch {
 

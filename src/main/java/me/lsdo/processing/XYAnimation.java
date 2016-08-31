@@ -9,7 +9,11 @@ package me.lsdo.processing;
 // Both spatial and temporal anti-aliasing is supported.
 
 import java.util.*;
-import processing.core.*;
+import processing.core.PVector;
+
+// Needed for lerp stuff
+import processing.core.PConstants;
+import processing.core.PGraphics;
 
 // IR is the type of the intermediate representation of the individual points to be sampled/rendered.
 public abstract class XYAnimation extends DomeAnimation {
@@ -45,7 +49,7 @@ public abstract class XYAnimation extends DomeAnimation {
 
 
         this.graphics = new PGraphics();
-        graphics.colorMode(PApplet.HSB,255);
+        graphics.colorMode(PConstants.HSB,255);
 
         this.base_subsampling = base_subsampling;
         this.temporal_jitter = temporal_jitter;
