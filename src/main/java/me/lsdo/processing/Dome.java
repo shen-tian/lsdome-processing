@@ -50,9 +50,12 @@ public class Dome {
         points = config.coordsToXy(coords);
         colors = new HashMap<DomeCoord, Integer>();
 
-        radius =LayoutUtil.getPanelConfig(Config.PARTIAL_LAYOUT ?
-                Config.FULL_PANEL_LAYOUT :
-                Config.PANEL_LAYOUT).radius;
+        // Don't think this is a super useful feature.
+        //radius =LayoutUtil.getPanelConfig(Config.PARTIAL_LAYOUT ?
+        //        Config.FULL_PANEL_LAYOUT :
+        //        Config.PANEL_LAYOUT).radius;
+
+        radius = config.radius;
 
         for (DomeCoord c : coords)
             setColor(c, 0);

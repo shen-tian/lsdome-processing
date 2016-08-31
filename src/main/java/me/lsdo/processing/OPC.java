@@ -25,6 +25,15 @@ public class OPC implements Runnable {
     private String colorCorrection;
     private FramePostprocessor framePostprocessor;
 
+    public OPC()
+    {
+        this.host = Config.getConfig().OpcHostname;
+        this.port = Config.getConfig().OpcPort;
+
+        thread = new Thread(this);
+        thread.start();
+    }
+
     public OPC(String host, int port) {
         this.host = host;
         this.port = port;

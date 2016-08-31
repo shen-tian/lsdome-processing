@@ -18,33 +18,55 @@ public class Config {
 
     private Config()
     {
-        FADECANDY_HOST = "127.0.0.1";
+        Properties prop = new Properties();
+        InputStream input = null;
 
-        Properties properties = new Properties();
+        // defaults
+        OpcHostname = "127.0.0.1";
+        OpcPort = 7890;
+
         try {
 
-            properties.load(new FileInputStream("config.properties"));
-            FADECANDY_HOST = properties.getProperty("opcHost");
-        } catch (IOException e) {
-            // do nothing. Use defaults. Meh.
+            String workingDir = System.getProperty("user.dir");
+            System.out.println("Looking for config.properties in: " + workingDir);
+
+
+            input = new FileInputStream("config.properties");
+
+            // load a properties file
+            prop.load(input);
+
+            // get the property value and print it out
+            if (prop.containsKey("opchostname"))
+                OpcHostname = prop.getProperty("opchostname");
+            if (prop.containsKey("opcport"))
+                OpcPort = Integer.parseInt(prop.getProperty("opcport"));
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        System.out.println(System.getProperty("user.dir"));
-        System.out.println(FADECANDY_HOST);
     }
 
     // Debug mode.
     static final boolean DEBUG = false;
 
-    // Fadecandy server.
-    //public String FADECANDY_HOST = "127.0.0.1";
-    public String FADECANDY_HOST;
+    public String OpcHostname;
+    public int OpcPort;
 
     // Size of single panel's pixel grid.
     static final int PANEL_SIZE = 15;
 
     // Panel configuration.
     //static final PanelLayout PANEL_LAYOUT = PanelLayout._2;
-    static final PanelLayout PANEL_LAYOUT = PanelLayout._13;
+    //static final PanelLayout PANEL_LAYOUT = PanelLayout._13;
     //static final PanelLayout PANEL_LAYOUT = PanelLayout._24;
 
     // If true, size the panels as if they were part of a larger layout.
