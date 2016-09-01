@@ -11,15 +11,8 @@ package me.lsdo.processing;
 import java.util.*;
 import processing.core.PVector;
 
-// Needed for lerp stuff
-import processing.core.PConstants;
-import processing.core.PGraphics;
-
 // IR is the type of the intermediate representation of the individual points to be sampled/rendered.
 public abstract class XYAnimation extends DomeAnimation {
-
-
-    protected PGraphics graphics;
 
     static final int DEFAULT_BASE_SUBSAMPLING = 1;
     static final int MAX_SUBSAMPLING = 64;
@@ -47,9 +40,6 @@ public abstract class XYAnimation extends DomeAnimation {
     public XYAnimation(Dome dome, OPC opc, int base_subsampling, boolean temporal_jitter) {
         super(dome, opc);
 
-
-        this.graphics = new PGraphics();
-        graphics.colorMode(PConstants.HSB,255);
 
         this.base_subsampling = base_subsampling;
         this.temporal_jitter = temporal_jitter;
@@ -110,20 +100,12 @@ public abstract class XYAnimation extends DomeAnimation {
             double t_jitter = (temporal_jitter ? (Math.random() - .5) / 60 : 0.);
             samples[i] = samplePoint(sub.get(i), t + t_jitter, t_jitter);
         }
-        return blendSamples(samples);
+        return OpcColor.blend(samples);
     }
 
     // Render an individual sample. 't' is clock time, including temporal jitter. 't_jitter' is the
     // amount of jitter added. Return a color.
     protected abstract int samplePoint(PVector ir, double t, double t_jitter);
 
-    int blendSamples(int[] samples) {
-        int blended = samples[0];
-        for (int i = 1; i < samples.length; i++) {
-            //TODO what colorspace does fadecandy use?
-            blended = graphics.lerpColor(blended, samples[i], (float)(1. / (1. + i)));
-        }
-        return blended;
-    }
 
 }
