@@ -49,8 +49,8 @@ void setup()
   colorMode(HSB, 100);
   texture = loadImage("ring.png");
 
-  Dome dome = new Dome();
-  OPC opc = new OPC("127.0.0.1", 7890);
+  Dome dome = new Dome(6);
+  OPC opc = new OPC();
   simple = new SimplestSketch(this, dome, opc);
 
   // We can have up to 100 rings. They all start out invisible.
