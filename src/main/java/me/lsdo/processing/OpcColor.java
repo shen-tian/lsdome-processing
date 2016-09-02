@@ -9,10 +9,10 @@ package me.lsdo.processing;
 public class OpcColor {
 
     // HSB color, given a value in [0,1] as input for each thing.
-    public static int getHsbColor(float hue, float saturation, float brightness) {
-        float x = hue;
-        float y = saturation;
-        float z = brightness;
+    public static int getHsbColor(double hue, double saturation, double brightness) {
+        float x = (float) hue;
+        float y = (float) saturation;
+        float z = (float) brightness;
 
         float calcR = 0;
         float calcG = 0;
