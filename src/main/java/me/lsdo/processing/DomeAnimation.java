@@ -6,6 +6,7 @@ package me.lsdo.processing;
  * THis forms the basis for a dome animation.
  */
 public abstract class DomeAnimation {
+
     protected Dome dome;
     protected OPC opc;
 
@@ -34,12 +35,21 @@ public abstract class DomeAnimation {
         return opc.getHost();
     }
 
+    // Main method that need to be implemented.
     protected abstract int drawPixel(DomeCoord c, double t);
 
+    /** Override this for pre-draw stuff.
+     *  e.g. loadPixel, or advance animation state.
+     * @param t time in seconds since start.
+     */
     protected void preFrame(double t){
 
     }
 
+    /** Override this for post-draw stuff
+     * e.g. save pixels.
+     * @param t
+     */
     protected void postFrame(double t){
 
     }
