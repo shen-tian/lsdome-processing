@@ -22,10 +22,6 @@ public abstract class XYAnimation extends DomeAnimation {
     // display pixel's color.
     private HashMap<DomeCoord, ArrayList<PVector>> points_ir;
 
-
-    // Amount of subsampling for each display pixel.
-    private int baseSubsampling;
-
     public XYAnimation(Dome dome, OPC opc) {
         this(dome, opc, DEFAULT_BASE_SUBSAMPLING);
     }
@@ -36,18 +32,17 @@ public abstract class XYAnimation extends DomeAnimation {
     public XYAnimation(Dome dome, OPC opc, int baseSubsampling) {
         super(dome, opc);
 
-
-        this.baseSubsampling = baseSubsampling;
-
         points_ir = new HashMap<DomeCoord, ArrayList<PVector>>();
-        int total_subsamples = 0;
+        int total_subsamples = baseSubsampling * dome.getNumPoints();
+        int num_subsamples = Math.min(baseSubsampling, MAX_SUBSAMPLING);
+
         for (DomeCoord c : dome.coords) {
             PVector p = dome.getLocation(c);
             ArrayList<PVector> samples = new ArrayList<PVector>();
             points_ir.put(c, samples);
 
             p = normalizePoint(p);
-            int num_subsamples = Math.min(baseSubsampling, MAX_SUBSAMPLING);
+
             boolean jitter = (num_subsamples > 1);
             for (int i = 0; i < num_subsamples; i++) {
                 PVector offset = (jitter ?
@@ -59,12 +54,10 @@ public abstract class XYAnimation extends DomeAnimation {
                 PVector sample = LayoutUtil.Vadd(p, offset);
                 samples.add(sample);
             }
-
-            total_subsamples += num_subsamples;
         }
 
-        System.out.println(String.format("%d subsamples for %d pixels (%.1f samples/pixel)",
-                total_subsamples, dome.getNumPoints(), (double)total_subsamples / dome.getNumPoints()));
+        System.out.println(String.format("%d subsamples for %d pixels (%d samples/pixel)",
+                total_subsamples, dome.getNumPoints(), baseSubsampling));
 
     }
 
