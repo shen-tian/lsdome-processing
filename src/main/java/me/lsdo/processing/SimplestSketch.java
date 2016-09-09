@@ -7,7 +7,7 @@ import processing.core.PApplet;
  */
 public class SimplestSketch extends CanvasSketch {
     public SimplestSketch(PApplet app, Dome dome, OPC opc) {
-        super(app, dome, opc);
+        super(app, dome, opc, 8);
     }
 
     public void paint(){

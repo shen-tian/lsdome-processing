@@ -11,9 +11,14 @@ import java.util.ArrayList;
 public class CanvasSketch extends XYAnimation {
 
     protected PApplet app;
+    private static int DEFAULT_AA = 8;
 
     public CanvasSketch(PApplet app, Dome dome, OPC opc){
-        super(dome, opc);
+        this(app, dome, opc, DEFAULT_AA);
+    }
+
+    public CanvasSketch(PApplet app, Dome dome, OPC opc, int antiAliasingSamples){
+        super(dome, opc, antiAliasingSamples);
         this.app = app;
     }
 
@@ -40,28 +45,11 @@ public class CanvasSketch extends XYAnimation {
 
     }
 
-    protected int samplePoint(PVector ir, double t, double t_jitter)
+    protected int samplePoint(PVector ir, double t)
     {
         PVector screenP = LayoutUtil.xyToScreen(ir, app.width, app.height, 2 * dome.getRadius(), true);
-
-        // some super simple super-sample anti aliasing here.
-        int gridSize = 3;
-        int density = 2;
-        int[] samples = new int[gridSize * gridSize];
-
-        for (int i = 0; i < samples.length; i++){
-            int mid = (gridSize - 1)/2;
-            int ox = density * (i % gridSize - mid);
-            int oy = density * (i / gridSize - mid);
-            int sampleLocation = (int) Math.floor(screenP.x + ox) + app.width * ((int) Math.floor(screenP.y + oy));
-            samples[i] = app.pixels[sampleLocation];
-        }
-
-        // Motion blur?
-        //int output = OpcColor.blurr(dome.getColor(ir), OpcColor.blend(samples));
-
-        return OpcColor.blend(samples);
-
+        int sampleLocation = (int)(Math.floor(screenP.x)) + app.width * ((int) Math.floor(screenP.y));
+        return app.pixels[sampleLocation];
     }
 
     public void draw()

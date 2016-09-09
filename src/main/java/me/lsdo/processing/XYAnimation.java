@@ -24,25 +24,20 @@ public abstract class XYAnimation extends DomeAnimation {
 
 
     // Amount of subsampling for each display pixel.
-    int base_subsampling;
-
-    // If true, perform anti-aliasing in the time domain. Combined with subsampling, this will yield
-    // motion blur.
-    boolean temporal_jitter;
+    private int baseSubsampling;
 
     public XYAnimation(Dome dome, OPC opc) {
-        this(dome, opc, DEFAULT_BASE_SUBSAMPLING, false);
+        this(dome, opc, DEFAULT_BASE_SUBSAMPLING);
     }
 
     // Assign each display pixel to N random samples based on the required amount of subsampling.
     // Furthermore, each subsample is converted to its intermediate representation to avoid
     // re-computing it every frame.
-    public XYAnimation(Dome dome, OPC opc, int base_subsampling, boolean temporal_jitter) {
+    public XYAnimation(Dome dome, OPC opc, int baseSubsampling) {
         super(dome, opc);
 
 
-        this.base_subsampling = base_subsampling;
-        this.temporal_jitter = temporal_jitter;
+        this.baseSubsampling = baseSubsampling;
 
         points_ir = new HashMap<DomeCoord, ArrayList<PVector>>();
         int total_subsamples = 0;
@@ -52,13 +47,13 @@ public abstract class XYAnimation extends DomeAnimation {
             points_ir.put(c, samples);
 
             p = normalizePoint(p);
-            int num_subsamples = Math.min((int)Math.ceil(base_subsampling * subsamplingBoost(p)), MAX_SUBSAMPLING);
+            int num_subsamples = Math.min(baseSubsampling, MAX_SUBSAMPLING);
             boolean jitter = (num_subsamples > 1);
             for (int i = 0; i < num_subsamples; i++) {
                 PVector offset = (jitter ?
                         normalizePoint(LayoutUtil.polarToXy(LayoutUtil.V(
-                                Math.random() * .5*LayoutUtil.pixelSpacing(dome.getPanelSize()),
-                                Math.random() * 2*Math.PI
+                                Math.random() * .5 * LayoutUtil.pixelSpacing(dome.getPanelSize()),
+                                Math.random() * 2 * Math.PI
                         ))) :
                         LayoutUtil.V(0, 0));
                 PVector sample = LayoutUtil.Vadd(p, offset);
@@ -80,32 +75,19 @@ public abstract class XYAnimation extends DomeAnimation {
         return LayoutUtil.Vmult(p, 1. / dome.getRadius());
     }
 
-    // **OVERRIDE** (optional)
-    // We may want to perform more subsampling in certain areas. Return the factor (e.g., 2x, 3x) to
-    // increase subsampling by at the given point.
-    double subsamplingBoost(PVector p) {
-        return 1.;
-    }
-
-
     protected int drawPixel(DomeCoord c, double t) {
-        return sampleAntialiased(points_ir.get(c), t);
-    }
+        ArrayList<PVector> sub = points_ir.get(c);
 
-    // Perform the anti-aliasing for a single display pixel.
-    int sampleAntialiased(ArrayList<PVector> sub, double t) {
         int[] samples = new int[sub.size()];
         for (int i = 0; i < sub.size(); i++) {
-            // Probably not right. The 60 used to read app.framerate
-            double t_jitter = (temporal_jitter ? (Math.random() - .5) / 60 : 0.);
-            samples[i] = samplePoint(sub.get(i), t + t_jitter, t_jitter);
+            samples[i] = samplePoint(sub.get(i), t);
         }
         return OpcColor.blend(samples);
     }
 
     // Render an individual sample. 't' is clock time, including temporal jitter. 't_jitter' is the
     // amount of jitter added. Return a color.
-    protected abstract int samplePoint(PVector ir, double t, double t_jitter);
+    protected abstract int samplePoint(PVector ir, double t);
 
 
 }

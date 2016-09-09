@@ -48,7 +48,7 @@ public abstract class DomeAnimation {
 
     /** Override this for post-draw stuff
      * e.g. save pixels.
-     * @param t
+     * @param t time in seconds since start
      */
     protected void postFrame(double t){
 
