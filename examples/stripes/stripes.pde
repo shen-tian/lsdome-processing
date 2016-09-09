@@ -10,7 +10,7 @@ void setup()
     Dome dome = new Dome(6);
     OPC opc = new OPC("127.0.0.1", 7890);
 
-    sketch = new CanvasSketch(this, dome, opc);
+    sketch = new CanvasSketch(this, dome, opc, 16);
 
     colorMode(HSB, 256);
 }

@@ -2,9 +2,6 @@ package me.lsdo.processing;
 
 import java.util.*;
 import processing.core.PVector;
-// Needed for JSON stuff
-import processing.data.*;
-import processing.core.PApplet;
 
 enum PanelLayout {
     _2,
@@ -273,28 +270,6 @@ public class LayoutUtil {
         default:
             throw new RuntimeException();
         }
-    }
-
-    // Generates the JSON config file for OPC simulator
-    public static void generateOPCSimLayout(ArrayList<PVector> points, PApplet app, String fileName)
-    {
-        JSONArray values = new JSONArray();
-
-        for (int i = 0; i < points.size(); i++) {
-
-            JSONObject point = new JSONObject();
-
-            float[] coordinates = new float[3];
-            coordinates[0] = 2 * points.get(i).x;
-            coordinates[1] = 2 * points.get(i).y;
-            coordinates[2] = 2 * points.get(i).z;
-
-            point.setJSONArray("point", new JSONArray(new FloatList(coordinates)));
-
-            values.setJSONObject(i, point);
-      }
-
-      app.saveJSONArray(values, fileName);
     }
 
     // Convert a 2-vector of (U, V) coordinates from the axial coordinate scheme into (x, y) cartesian coordinates

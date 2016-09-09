@@ -2,6 +2,9 @@ package me.lsdo.processing;
 
 import processing.core.PApplet;
 import processing.core.PVector;
+import processing.data.FloatList;
+import processing.data.JSONArray;
+import processing.data.JSONObject;
 
 import java.util.ArrayList;
 
@@ -64,7 +67,29 @@ public class CanvasSketch extends XYAnimation {
             xy.add(dome.getLocation(c));
         }
 
-        LayoutUtil.generateOPCSimLayout(xy, app, "layout.json");
+        generateOPCSimLayout(xy, app, "layout.json");
+    }
+
+    // Generates the JSON config file for OPC simulator
+    public static void generateOPCSimLayout(ArrayList<PVector> points, PApplet app, String fileName)
+    {
+        JSONArray values = new JSONArray();
+
+        for (int i = 0; i < points.size(); i++) {
+
+            JSONObject point = new JSONObject();
+
+            float[] coordinates = new float[3];
+            coordinates[0] = 2 * points.get(i).x;
+            coordinates[1] = 2 * points.get(i).y;
+            coordinates[2] = 2 * points.get(i).z;
+
+            point.setJSONArray("point", new JSONArray(new FloatList(coordinates)));
+
+            values.setJSONObject(i, point);
+        }
+
+        app.saveJSONArray(values, fileName);
     }
 
 }
