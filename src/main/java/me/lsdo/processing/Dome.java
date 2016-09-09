@@ -18,6 +18,7 @@ public class Dome {
 
     // Mapping of pixel grid coordinates to xy locations (world coordinates, not screen
     // coordinates!)
+    // Question: is this Intermediate representation?
     private HashMap<DomeCoord, PVector> points;
 
     // Color

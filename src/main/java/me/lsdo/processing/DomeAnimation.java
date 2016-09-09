@@ -22,6 +22,7 @@ public abstract class DomeAnimation {
         for (DomeCoord c : dome.coords){
             dome.setColor(c, drawPixel(c, t));
         }
+        postFrame(t);
         opc.draw();
     }
 
@@ -36,6 +37,10 @@ public abstract class DomeAnimation {
     protected abstract int drawPixel(DomeCoord c, double t);
 
     protected void preFrame(double t){
+
+    }
+
+    protected void postFrame(double t){
 
     }
 }
