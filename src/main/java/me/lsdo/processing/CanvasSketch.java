@@ -1,7 +1,7 @@
 package me.lsdo.processing;
 
 import processing.core.PApplet;
-import processing.core.PVector;
+
 import processing.data.FloatList;
 import processing.data.JSONArray;
 import processing.data.JSONObject;
@@ -33,7 +33,7 @@ public class CanvasSketch extends XYAnimation {
 
         // draw pixel locations
         for (DomeCoord c : dome.coords){
-            PVector screenP = LayoutUtil.xyToScreen(dome.getLocation(c), app.width, app.height, 2 * dome.getRadius(), true);
+            PVector2 screenP = LayoutUtil.xyToScreen(dome.getLocation(c), app.width, app.height, 2 * dome.getRadius(), true);
             int pixelLocation = (int) Math.floor(screenP.x) + app.width * ((int) Math.floor(screenP.y));
 
             app.pixels[pixelLocation] = 0xFFFFFF ^ app.pixels[pixelLocation];
@@ -48,9 +48,9 @@ public class CanvasSketch extends XYAnimation {
 
     }
 
-    protected int samplePoint(PVector ir, double t)
+    protected int samplePoint(PVector2 ir, double t)
     {
-        PVector screenP = LayoutUtil.xyToScreen(ir, app.width, app.height, 2 * dome.getRadius(), true);
+        PVector2 screenP = LayoutUtil.xyToScreen(ir, app.width, app.height, 2 * dome.getRadius(), true);
         int sampleLocation = (int)(Math.floor(screenP.x)) + app.width * ((int) Math.floor(screenP.y));
         return app.pixels[sampleLocation];
     }
@@ -62,7 +62,7 @@ public class CanvasSketch extends XYAnimation {
 
     public void writeLayoutJson(){
 
-        ArrayList<PVector> xy = new ArrayList<PVector>();
+        ArrayList<PVector2> xy = new ArrayList<PVector2>();
         for (DomeCoord c : dome.coords) {
             xy.add(dome.getLocation(c));
         }
@@ -71,7 +71,7 @@ public class CanvasSketch extends XYAnimation {
     }
 
     // Generates the JSON config file for OPC simulator
-    public static void generateOPCSimLayout(ArrayList<PVector> points, PApplet app, String fileName)
+    public static void generateOPCSimLayout(ArrayList<PVector2> points, PApplet app, String fileName)
     {
         JSONArray values = new JSONArray();
 
@@ -82,7 +82,7 @@ public class CanvasSketch extends XYAnimation {
             float[] coordinates = new float[3];
             coordinates[0] = 2 * points.get(i).x;
             coordinates[1] = 2 * points.get(i).y;
-            coordinates[2] = 2 * points.get(i).z;
+            coordinates[2] = 0;
 
             point.setJSONArray("point", new JSONArray(new FloatList(coordinates)));
 

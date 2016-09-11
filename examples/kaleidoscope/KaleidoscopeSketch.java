@@ -1,5 +1,5 @@
 import java.util.*;
-import processing.core.*;
+//import processing.core.*;
 import me.lsdo.processing.*;
 
 public class KaleidoscopeSketch extends DomeAnimation {
@@ -13,7 +13,7 @@ public class KaleidoscopeSketch extends DomeAnimation {
 
     // colors for the base panel. What algorithm is here?
     int getBasePixel(DomeCoord c, double t) {
-        PVector p = dome.getLocation(c);
+        PVector2 p = dome.getLocation(c);
         p = LayoutUtil.Vrot(p, t * (.5 + 3*.5*(Math.cos(.1213*t)+1)));
         p = LayoutUtil.Vmult(p, 1/(1 + 5*.5*(Math.cos(.3025*t)+1)));
         p = LayoutUtil.Vadd(p, LayoutUtil.V(2*Math.cos(.2*t), 0));

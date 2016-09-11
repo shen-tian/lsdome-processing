@@ -1,7 +1,7 @@
 package me.lsdo.processing;
 
 import java.util.*;
-import processing.core.PVector;
+//import processing.core.PVector;
 
 enum PanelLayout {
     _2,
@@ -26,40 +26,40 @@ public class LayoutUtil {
     // Convenience methods to make vector math easier. Input arguments are treated as constants.
 
     // Create a new vector (x, y)
-    static public PVector V(double x, double y) {
-        return new PVector((float)x, (float)y);
+    static public PVector2 V(double x, double y) {
+        return new PVector2((float)x, (float)y);
     }
 
     // Clone a vector
-    public static PVector V(PVector v) {
+    public static PVector2 V(PVector2 v) {
         return V(v.x, v.y);
     }
 
     // Return a + b
-    static public PVector Vadd(PVector a, PVector b) {
-        return PVector.add(a, b);
+    static public PVector2 Vadd(PVector2 a, PVector2 b) {
+        return PVector2.add(a, b);
     }
 
     // Return a - b
-    public static PVector Vsub(PVector a, PVector b) {
+    public static PVector2 Vsub(PVector2 a, PVector2 b) {
         return Vadd(a, Vmult(b, -1.));
     }
 
     // Return k * a
-    public static PVector Vmult(PVector v, double k) {
-        return PVector.mult(v, (float)k);
+    public static PVector2 Vmult(PVector2 v, double k) {
+        return PVector2.mult(v, (float)k);
     }
 
     // Return v rotated counter-clockwise by theta radians
-    public static PVector Vrot(PVector v, double theta) {
-        PVector rot = V(v);
+    public static PVector2 Vrot(PVector2 v, double theta) {
+        PVector2 rot = V(v);
         rot.rotate((float)theta);
         return rot;
     }
 
     // Compute a basis transformation for vector p, where u is the transformation result of basis vector U (1, 0),
     // and v is the transformation of basis V (0, 1)
-    public static PVector basisTransform(PVector p, PVector U, PVector V) {
+    public static PVector2 basisTransform(PVector2 p, PVector2 U, PVector2 V) {
         return Vadd(Vmult(U, p.x), Vmult(V, p.y));
     }
 
@@ -73,22 +73,22 @@ public class LayoutUtil {
     }
 
     static interface Transform {
-        public PVector transform(PVector p);
+        public PVector2 transform(PVector2 p);
     }
 
     // Convert a set of points in bulk according to some transformation function.
-    public static ArrayList<PVector> transform(ArrayList<PVector> points, Transform tx) {
-        ArrayList<PVector> transformed = new ArrayList<PVector>();
-        for (PVector p : points) {
+    public static ArrayList<PVector2> transform(ArrayList<PVector2> points, Transform tx) {
+        ArrayList<PVector2> transformed = new ArrayList<PVector2>();
+        for (PVector2 p : points) {
             transformed.add(tx.transform(p));
         }
         return transformed;
     }
 
     // Transformation that translates a point by 'offset'
-    public static Transform translate(final PVector offset) {
+    public static Transform translate(final PVector2 offset) {
         return new Transform() {
-            public PVector transform(PVector p) {
+            public PVector2 transform(PVector2 p) {
                 return Vadd(p, offset);
             }
         };
@@ -115,7 +115,7 @@ public class LayoutUtil {
 
     // Fill a triangle using the sizing and entry/exit semantics from above, where the triangle's origin is
     // the axial UV coordinate 'entry' and rotated clockwise by angle 60deg * rot
-    public static ArrayList<DomeCoord> fillTriangle(final PVector entry, final int rot, int n) {
+    public static ArrayList<DomeCoord> fillTriangle(final PVector2 entry, final int rot, int n) {
         // TODO can these be derived from first principles?
         int[][] offsets = {{0, 0, -1}, {-1, 0, -1}, {-1, 0, 0}, {-1, -1, 0}, {0, -1, 0}, {0, -1, -1}};
 
@@ -134,7 +134,7 @@ public class LayoutUtil {
     }
 
     // Get the exit point for a triangle fill
-    public static PVector exitPointForFill(PVector entry, int rot) {
+    public static PVector2 exitPointForFill(PVector2 entry, int rot) {
         return axialNeighbor(entry, rot - 1);
     }
 
@@ -146,7 +146,7 @@ public class LayoutUtil {
     // intersects the origin is filled. 'segments' is the number of triangular segments to fill (up to 6).
     // 'pixels' is the fill density within each triangle. 'orientation' is the initial orientation in
     // which the long axis of the hexagon follows the angle specified by 'rot' semantics above.
-    public static ArrayList<DomeCoord> fillFan(int orientation, int segments, int pixels, PVector entry) {
+    public static ArrayList<DomeCoord> fillFan(int orientation, int segments, int pixels, PVector2 entry) {
         ArrayList<DomeCoord> points = new ArrayList<DomeCoord>();
         int rot = orientation;
         for (int i = 0; i < segments; i++) {
@@ -160,11 +160,11 @@ public class LayoutUtil {
     // Convert tri-grid u/v/w coordinates to cartesian x/y coordinates. Points are placed such that spacing
     // between two adjacent points will match the spacing between an edge point and the opposing point of a
     // neighboring triangle.
-    public static PVector coordToXy(DomeCoord c) {
+    public static PVector2 coordToXy(DomeCoord c) {
         double spacing = pixelSpacing(c.pixel.panel_length);
-        PVector root = c.panel.toV();
-        PVector px = c.pixel.toV();
-        PVector offset = V(1/SQRT_3, 1/SQRT_3);
+        PVector2 root = c.panel.toV();
+        PVector2 px = c.pixel.toV();
+        PVector2 offset = V(1/SQRT_3, 1/SQRT_3);
         if (c.panel.getOrientation() == TriCoord.PanelOrientation.B) {
             root = Vadd(root, V(1, 1));
             px = Vsub(px, V(c.pixel.panel_length - 1, c.pixel.panel_length - 1));
@@ -177,10 +177,10 @@ public class LayoutUtil {
     public static abstract class PanelConfig {
         double radius;  // Max radius of panel configuration, in panel lengths
         int[] arms;     // Number of panels per fadecandy 'arm'
-        PVector origin; // Center the layout on this point (in UV coordinates)
+        PVector2 origin; // Center the layout on this point (in UV coordinates)
         double theta;   // Rotate the layout counter-clockwise by this many degrees
 
-        public PanelConfig(int num_panels, double radius, int[] arms, PVector origin, double theta) {
+        public PanelConfig(int num_panels, double radius, int[] arms, PVector2 origin, double theta) {
             this.radius = radius;
             this.arms = arms;
             this.origin = origin;
@@ -197,11 +197,11 @@ public class LayoutUtil {
         abstract ArrayList<DomeCoord> fill(int n);
 
         // Convert the filled grid points to a mapping of grid points to their actual positions.
-        HashMap<DomeCoord, PVector> coordsToXy(ArrayList<DomeCoord> coords) {
-            HashMap<DomeCoord, PVector> coordToPoint = new HashMap<DomeCoord, PVector>();
-            PVector offset = axialToXy(origin);
+        HashMap<DomeCoord, PVector2> coordsToXy(ArrayList<DomeCoord> coords) {
+            HashMap<DomeCoord, PVector2> coordToPoint = new HashMap<DomeCoord, PVector2>();
+            PVector2 offset = axialToXy(origin);
             for (DomeCoord c : coords) {
-                PVector p = Vrot(Vsub(coordToXy(c), offset), Math.toRadians(theta));
+                PVector2 p = Vrot(Vsub(coordToXy(c), offset), Math.toRadians(theta));
                 coordToPoint.put(c, p);
             }
             return coordToPoint;
@@ -235,7 +235,7 @@ public class LayoutUtil {
                                              new int[] {4, 4, 4, 1},
                                              V(1/3., 1/3.), 0.) {
             ArrayList<DomeCoord> fill(int n) {
-                final PVector[] entries = {V(1, 0), V(0, 1), V(0, 0)};
+                final PVector2[] entries = {V(1, 0), V(0, 1), V(0, 0)};
                 ArrayList<DomeCoord> points = new ArrayList<DomeCoord>();
                 for (int i = 0; i < 3; i++) {
                     points.addAll(fillFan(2*i+1, 4, n, entries[i]));
@@ -273,46 +273,46 @@ public class LayoutUtil {
     }
 
     // Convert a 2-vector of (U, V) coordinates from the axial coordinate scheme into (x, y) cartesian coordinates
-    public static PVector axialToXy(PVector p) {
-        PVector U = V(.5, .5 * SQRT_3);
-        PVector V = V(1., 0.);
+    public static PVector2 axialToXy(PVector2 p) {
+        PVector2 U = V(.5, .5 * SQRT_3);
+        PVector2 V = V(1., 0.);
         return basisTransform(p, U, V);
     }
 
     // Convert (x, y) coordinate p to screen pixel coordinates where top-left is pixel (0, 0) and bottom-right is
     // pixel (width, height). 'span' is the size of the viewport in world coordinates, where size means width if horizSpan is
     // true and height if horizSpan is false. World origin is in the center of the viewport.
-    public static PVector xyToScreen(PVector p, int width, int height, double span, boolean horizSpan) {
+    public static PVector2 xyToScreen(PVector2 p, int width, int height, double span, boolean horizSpan) {
         double scale = span / (horizSpan ? width : height);
-        PVector U = V(1. / scale, 0);
-        PVector V = V(0, -1. / scale);
-        PVector offset = Vmult(V(width, height), .5);
+        PVector2 U = V(1. / scale, 0);
+        PVector2 V = V(0, -1. / scale);
+        PVector2 offset = Vmult(V(width, height), .5);
         return Vadd(basisTransform(p, U, V), offset);
     }
 
     // Inverse of xyToScreen
-    public static PVector screenToXy(PVector p, int width, int height, double span, boolean horizSpan) {
+    public static PVector2 screenToXy(PVector2 p, int width, int height, double span, boolean horizSpan) {
         double scale = span / (horizSpan ? width : height);
-        PVector U = V(scale, 0);
-        PVector V = V(0, -scale);
-        PVector offset = Vmult(V(width, height), .5);
+        PVector2 U = V(scale, 0);
+        PVector2 V = V(0, -scale);
+        PVector2 offset = Vmult(V(width, height), .5);
         return basisTransform(Vsub(p, offset), U, V);
     }
 
     // Convert (x, y) coordinate to polar coordinates (radius, theta [counter-clockwise])
-    public static PVector xyToPolar(PVector p) {
+    public static PVector2 xyToPolar(PVector2 p) {
         return V(p.mag(), Math.atan2(p.y, p.x));
     }
 
     // Convert polar coordinates (radius, theta [counter-clockwise]) to cartesian (x, y)
-    public static PVector polarToXy(PVector p) {
+    public static PVector2 polarToXy(PVector2 p) {
         double r = p.x;
         double theta = p.y;
         return Vrot(V(r, 0), theta);
     }
 
     // Return the adjacent axial coordinate moving from 'p' in direction 'rot'
-    public static PVector axialNeighbor(PVector p, int rot) {
+    public static PVector2 axialNeighbor(PVector2 p, int rot) {
         int axis = MathUtil.mod(rot, 3);
         boolean hemi = (MathUtil.mod(rot, 6) < 3);
         int du = (axis == 0 ? 0 : (hemi ? -1 : 1));
@@ -321,7 +321,7 @@ public class LayoutUtil {
     }
 
     // Return whether two axial coordinates are adjacent lattice points
-    public static boolean axialCoordsAdjacent(PVector a, PVector b) {
+    public static boolean axialCoordsAdjacent(PVector2 a, PVector2 b) {
         int du = (int)a.x - (int)b.x;
         int dv = (int)a.y - (int)b.y;
         return (du >= -1 && du <= 1 && dv >= -1 && dv <= 1 && du != dv);

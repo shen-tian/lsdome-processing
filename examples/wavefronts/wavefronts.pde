@@ -41,7 +41,7 @@ PImage texture;
 Ring rings[];
 float smoothX, smoothY;
 boolean f = false;
-SimplestSketch simple;
+CanvasSketch canvas;
 
 void setup()
 {
@@ -51,7 +51,7 @@ void setup()
 
   Dome dome = new Dome(6);
   OPC opc = new OPC();
-  simple = new SimplestSketch(this, dome, opc);
+  canvas = new CanvasSketch(this, dome, opc, 1);
 
   // We can have up to 100 rings. They all start out invisible.
   rings = new Ring[100];
@@ -79,6 +79,6 @@ void draw()
     rings[i].draw();
   }
   
-  simple.draw();
+  canvas.draw();
 }
 

@@ -2,7 +2,7 @@ package me.lsdo.processing;
 
 import java.util.*;
 
-import processing.core.PVector;
+//import processing.core.PVector;
 
 // Representation of a lattice (integer) coordinate within a 3-axis triangular coordinate system.
 // Unlike a two-axis x/y coordinate system, a triangular lattice has points along 3 axes. It is
@@ -197,7 +197,7 @@ public class TriCoord {
                 MathUtil.mod(uni.w, panel_length));
     }
 
-    PVector toV() {
+    PVector2 toV() {
         return LayoutUtil.V(u, v);
     }
 

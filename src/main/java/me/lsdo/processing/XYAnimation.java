@@ -9,7 +9,7 @@ package me.lsdo.processing;
 // Both spatial and temporal anti-aliasing is supported.
 
 import java.util.*;
-import processing.core.PVector;
+//import processing.core.PVector;
 
 // IR is the type of the intermediate representation of the individual points to be sampled/rendered.
 public abstract class XYAnimation extends DomeAnimation {
@@ -20,7 +20,7 @@ public abstract class XYAnimation extends DomeAnimation {
 
     // Mapping of display pixels to 1 or more actual samples that will be combined to yield that
     // display pixel's color.
-    private HashMap<DomeCoord, ArrayList<PVector>> points_ir;
+    private HashMap<DomeCoord, ArrayList<PVector2>> points_ir;
 
     public XYAnimation(Dome dome, OPC opc) {
         this(dome, opc, DEFAULT_BASE_SUBSAMPLING);
@@ -32,26 +32,26 @@ public abstract class XYAnimation extends DomeAnimation {
     public XYAnimation(Dome dome, OPC opc, int baseSubsampling) {
         super(dome, opc);
 
-        points_ir = new HashMap<DomeCoord, ArrayList<PVector>>();
+        points_ir = new HashMap<DomeCoord, ArrayList<PVector2>>();
         int total_subsamples = baseSubsampling * dome.getNumPoints();
         int num_subsamples = Math.min(baseSubsampling, MAX_SUBSAMPLING);
 
         for (DomeCoord c : dome.coords) {
-            PVector p = dome.getLocation(c);
-            ArrayList<PVector> samples = new ArrayList<PVector>();
+            PVector2 p = dome.getLocation(c);
+            ArrayList<PVector2> samples = new ArrayList<PVector2>();
             points_ir.put(c, samples);
 
             p = normalizePoint(p);
 
             boolean jitter = (num_subsamples > 1);
             for (int i = 0; i < num_subsamples; i++) {
-                PVector offset = (jitter ?
+                PVector2 offset = (jitter ?
                         normalizePoint(LayoutUtil.polarToXy(LayoutUtil.V(
                                 Math.random() * .5 * LayoutUtil.pixelSpacing(dome.getPanelSize()),
                                 Math.random() * 2 * Math.PI
                         ))) :
                         LayoutUtil.V(0, 0));
-                PVector sample = LayoutUtil.Vadd(p, offset);
+                PVector2 sample = LayoutUtil.Vadd(p, offset);
                 samples.add(sample);
             }
         }
@@ -64,12 +64,12 @@ public abstract class XYAnimation extends DomeAnimation {
 
     // Convert an xy coordinate in 'panel length' units such that the perimeter of the display area
     // is the unit circle.
-    protected PVector normalizePoint(PVector p) {
+    protected PVector2 normalizePoint(PVector2 p) {
         return LayoutUtil.Vmult(p, 1. / dome.getRadius());
     }
 
     protected int drawPixel(DomeCoord c, double t) {
-        ArrayList<PVector> sub = points_ir.get(c);
+        ArrayList<PVector2> sub = points_ir.get(c);
 
         int[] samples = new int[sub.size()];
         for (int i = 0; i < sub.size(); i++) {
@@ -80,7 +80,7 @@ public abstract class XYAnimation extends DomeAnimation {
 
     // Render an individual sample. 't' is clock time, including temporal jitter. 't_jitter' is the
     // amount of jitter added. Return a color.
-    protected abstract int samplePoint(PVector ir, double t);
+    protected abstract int samplePoint(PVector2 ir, double t);
 
 
 }

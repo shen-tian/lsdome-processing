@@ -1,6 +1,6 @@
 import me.lsdo.processing.*;
 import java.util.*;
-import processing.core.*;
+//import processing.core.*;
 
 public class PixelTestAnimation extends DomeAnimation {
 
@@ -41,10 +41,10 @@ public class PixelTestAnimation extends DomeAnimation {
 
         double min_sat = .5;
         double max_sat = 1.;
-        return getHsbColor(
-        (int)(255 * arm / (double)arms.length), 
-        (int)(255 * (min_sat*(1-k_panel) + max_sat*k_panel)), 
-        (int)(255* MathUtil.fmod(k_px, 1.)));
+        return OpcColor.getHsbColor(
+        arm / (double)arms.length,
+        (min_sat*(1-k_panel) + max_sat*k_panel),
+        MathUtil.fmod(k_px, 1.));
     }
 
 }

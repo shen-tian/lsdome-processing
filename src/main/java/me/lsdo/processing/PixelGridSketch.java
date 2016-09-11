@@ -7,7 +7,6 @@
 package me.lsdo.processing;
 
 import processing.core.PApplet;
-import processing.core.PVector;
 
 public class PixelGridSketch {
 
@@ -28,7 +27,7 @@ public class PixelGridSketch {
         app.background(0);
         app.noStroke();
         for (DomeCoord c : animation.dome.coords){
-            PVector p = LayoutUtil.xyToScreen(animation.dome.getLocation(c),
+            PVector2 p = LayoutUtil.xyToScreen(animation.dome.getLocation(c),
                     app.width, app.height, 2 * animation.dome.getRadius(), true);
             app.fill(animation.dome.getColor(c));
             app.ellipse(p.x, p.y, 3, 3);

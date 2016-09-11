@@ -8,7 +8,7 @@
 package me.lsdo.processing;
 
 import java.util.*;
-import processing.core.PVector;
+//import processing.core.PVector;
 
 public class Dome {
 
@@ -19,7 +19,7 @@ public class Dome {
     // Mapping of pixel grid coordinates to xy locations (world coordinates, not screen
     // coordinates!)
     // Question: is this Intermediate representation?
-    private HashMap<DomeCoord, PVector> points;
+    private HashMap<DomeCoord, PVector2> points;
 
     // Color
     private HashMap<DomeCoord, Integer> colors;
@@ -71,7 +71,7 @@ public class Dome {
       colors.put(dCoord, color);
     }
 
-    public PVector getLocation(DomeCoord dCoord){
+    public PVector2 getLocation(DomeCoord dCoord){
         return points.get(dCoord);
     }
 

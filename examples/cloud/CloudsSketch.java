@@ -42,7 +42,7 @@ public class CloudsSketch extends XYAnimation {
         dz += (noise(t * 0.014) - 0.5) * zspeed * delta_t;
     }
 
-    protected int samplePoint(PVector p, double t, double t_jitter) {
+    protected int samplePoint(PVector2 p, double t) {
         // Noise patterns are symmetrical around the origin and it looks weird. Move origin to corner.
         p = LayoutUtil.Vadd(p, LayoutUtil.V(1, 1));
 
@@ -53,10 +53,10 @@ public class CloudsSketch extends XYAnimation {
         double n = fractalNoise(dx + p.x*scale, dy + p.y*scale, z) - 0.75;
         double m = fractalNoise(dx + p.x*scale, dy + p.y*scale, z + 10.0) - 0.75;
                     
-        return getHsbColor(
-                     (int)(255 * MathUtil.fmod(hue + .8 * m, 1.)), 
-                     (int)(255 * (1. - constrain(Math.pow(3.0 * n, 3.5), 0, 0.9))), 
-                     (int)(255 * constrain(Math.pow(3.0 * n, 1.5), 0, 0.9))
+        return OpcColor.getHsbColor(
+                     MathUtil.fmod(hue + .8 * m, 1.), 
+                     1. - constrain(Math.pow(3.0 * n, 3.5), 0, 0.9), 
+                     constrain(Math.pow(3.0 * n, 1.5), 0, 0.9)
                      );
     }
 
