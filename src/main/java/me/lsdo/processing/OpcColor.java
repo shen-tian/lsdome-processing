@@ -62,18 +62,35 @@ public class OpcColor {
             }
         }
 
-        byte calcRi = (byte) (255 * calcR);
-        byte calcGi = (byte) (255 * calcG);
-        byte calcBi = (byte) (255 * calcB);
+        int calcRi = (int) (255 * calcR);
+        int calcGi = (int) (255 * calcG);
+        int calcBi = (int) (255 * calcB);
 
-        return getRgbColor(calcRi, calcBi, calcGi);
+        return getRgbColor(calcRi, calcGi, calcBi);
     }
 
     // This uses 0-255 inputs
     public static int getRgbColor(int red, int green, int blue) {
-        // Why do these two lines do diff things?
-        //return (255 << 24) | (red << 16) | (green << 8) | blue;
-        return blue + (green << 8) + (red << 16) + (255 << 24);
+        int alpha = 255;
+        return (alpha << 24) | (red << 16) | (green << 8) | blue;
+    }
+
+    public static final int A_MASK = 255 << 24;
+    public static final int R_MASK = 255 << 16;
+    public static final int G_MASK = 255 << 8;
+    public static final int B_MASK = 255;
+
+
+    public static int getRed(int color){
+        return (color & R_MASK) >> 16;
+    }
+
+    public static int getGreen(int color){
+        return (color & G_MASK) >> 8;
+    }
+
+    public static int getBlue(int color){
+        return (color & B_MASK);
     }
 
     // Does a simple average (no gamma?) on the RGB of the samples.
@@ -82,10 +99,6 @@ public class OpcColor {
         int r = 0;
         int g = 0;
         int b = 0;
-
-        int B_MASK = 255;
-        int G_MASK = 255<<8; //65280
-        int R_MASK = 255<<16; //16711680
 
         for (int i = 0; i < samples.length; i++) {
             r += ((samples[i] & R_MASK)>>16);
@@ -124,5 +137,13 @@ public class OpcColor {
 
         return getRgbColor(r, g, b);
         //return c2;
+    }
+
+    private static int constrain(int x, int min, int max) {
+        if (x > max)
+            return max;
+        if (x < min)
+            return min;
+        return x;
     }
 }

@@ -49,14 +49,14 @@ The library is published at the Maven repo on _jcenter_, so you just need to add
     }
 
     dependencies {
-        compile 'me.lsdo.processing:lsdome-processing:0.9.1'
+        compile 'me.lsdo.processing:lsdome-processing:0.9.2'
         }
 
 in the right place in your `gradle.build`. If you are using Leiningen:
 
     :repositories [["jcenter" {:url "http://jcenter.bintray.com"}]]
     :dependencies [
-        [me.lsdo.processing/lsdome-processing "0.9.1"]]
+        [me.lsdo.processing/lsdome-processing "0.9.2"]]
 
 in your `project.clj` should do the trick.
 
