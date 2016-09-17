@@ -62,10 +62,10 @@ public class TriCoord {
     }
 
 
-    static final Axis[] axes = {Axis.U, Axis.V, Axis.W};
-    static final PanelOrientation[] orientations = {PanelOrientation.A, PanelOrientation.B};
+    public static final Axis[] axes = {Axis.U, Axis.V, Axis.W};
+    public static final PanelOrientation[] orientations = {PanelOrientation.A, PanelOrientation.B};
 
-    CoordType type;
+    public CoordType type;
     public int u;
     public int v;
     public int w;
@@ -201,7 +201,7 @@ public class TriCoord {
         return LayoutUtil.V(u, v);
     }
 
-    int getAxis(Axis ax) {
+    public int getAxis(Axis ax) {
         switch (ax) {
             case U:
                 return u;

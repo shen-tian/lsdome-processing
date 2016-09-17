@@ -25,7 +25,7 @@ public class DomeCoord {
         this.pixel = pixel;
     }
 
-    TriCoord getCoord(TriCoord.CoordType type) {
+    public TriCoord getCoord(TriCoord.CoordType type) {
         switch (type) {
         case UNIVERSAL: return universal;
         case PANEL: return panel;

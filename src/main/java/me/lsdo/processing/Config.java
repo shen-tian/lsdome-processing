@@ -30,17 +30,20 @@ public class Config {
             String workingDir = System.getProperty("user.dir");
             System.out.println("Looking for config.properties in: " + workingDir);
 
+            File file = new File("config.properties");
+            if (file.isFile()) {
 
-            input = new FileInputStream("config.properties");
+                input = new FileInputStream("config.properties");
 
-            // load a properties file
-            prop.load(input);
+                // load a properties file
+                prop.load(input);
 
-            // get the property value and print it out
-            if (prop.containsKey("opchostname"))
-                OpcHostname = prop.getProperty("opchostname");
-            if (prop.containsKey("opcport"))
-                OpcPort = Integer.parseInt(prop.getProperty("opcport"));
+                // get the property value and print it out
+                if (prop.containsKey("opchostname"))
+                    OpcHostname = prop.getProperty("opchostname");
+                if (prop.containsKey("opcport"))
+                    OpcPort = Integer.parseInt(prop.getProperty("opcport"));
+            }
 
         } catch (IOException ex) {
             ex.printStackTrace();

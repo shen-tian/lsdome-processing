@@ -1,7 +1,6 @@
 package me.lsdo.processing;
 
 import java.util.*;
-//import processing.core.PVector;
 
 enum PanelLayout {
     _2,
