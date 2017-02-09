@@ -84,13 +84,16 @@ task wrapper(type: Wrapper) {
 }
 
 task copyJar(type: Copy, dependsOn: build) {
-    from 'build/libs/'
+    from ('build/libs/') {
+         exclude '**/*sources.jar', '**/*javadoc.jar'
+         rename 'lsdome-processing-(.*).jar', 'lsdome.jar'
+    }
     into 'library/'
 }
 
 task makeArtifact(type: Zip, dependsOn: copyJar){
-    archiveName = 'lsdome-processing.zip'
-    into 'lsdome-processing'
+    archiveName = 'lsdome.zip'
+    into 'lsdome'
 
     from projectDir
     include 'src/**/*'

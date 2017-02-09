@@ -37,10 +37,7 @@ similar should work in Windows. Assumes you've got Java installed.
 1. `git clone` somewhere.
 2. `./gradlew makeArtifact` to build. This creates `lsdome-processing.zip` in `\build\distributions\`.
 3. Unzip the contents into your Processing `libraries` folder. This seems to be the `~\Documents\Processing\libraries`
-folder on macOS. Restart Processing IDE and you are good. *NOTE*: this doesn't seem to be working
-at the moment. So, extra steps:
-4. Rename the `lsdome-processing` folder to `lsdome`.
-5. Rename `lsdome/library/lsdome-procesing-0.9.2.jar` `lsdome.jar`. Delete the other two jars (src and doc).
+folder on macOS. Restart Processing IDE and you are good. 
 
 Will fix in the gradle script.
 
