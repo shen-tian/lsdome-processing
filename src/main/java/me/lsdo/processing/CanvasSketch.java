@@ -50,7 +50,7 @@ public class CanvasSketch extends XYAnimation {
 
     protected int samplePoint(PVector2 ir, double t)
     {
-        PVector2 screenP = LayoutUtil.xyToScreen(ir, app.width, app.height, 2 * dome.getRadius(), true);
+        PVector2 screenP = LayoutUtil.xyToScreen(ir, app.width, app.height, 2 /* coordinates have been normalized already, so don't multiply by radius*/, true);
         int sampleLocation = (int)(Math.floor(screenP.x)) + app.width * ((int) Math.floor(screenP.y));
         return app.pixels[sampleLocation];
     }
