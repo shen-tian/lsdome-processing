@@ -60,36 +60,4 @@ public class CanvasSketch extends XYAnimation {
         draw(0); // because we don't use time here.
     }
 
-    public void writeLayoutJson(){
-
-        ArrayList<PVector2> xy = new ArrayList<PVector2>();
-        for (DomeCoord c : dome.coords) {
-            xy.add(dome.getLocation(c));
-        }
-
-        generateOPCSimLayout(xy, app, "layout.json");
-    }
-
-    // Generates the JSON config file for OPC simulator
-    public static void generateOPCSimLayout(ArrayList<PVector2> points, PApplet app, String fileName)
-    {
-        JSONArray values = new JSONArray();
-
-        for (int i = 0; i < points.size(); i++) {
-
-            JSONObject point = new JSONObject();
-
-            float[] coordinates = new float[3];
-            coordinates[0] = 2 * points.get(i).x;
-            coordinates[1] = 2 * points.get(i).y;
-            coordinates[2] = 0;
-
-            point.setJSONArray("point", new JSONArray(new FloatList(coordinates)));
-
-            values.setJSONObject(i, point);
-        }
-
-        app.saveJSONArray(values, fileName);
-    }
-
 }

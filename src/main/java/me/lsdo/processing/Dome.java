@@ -34,12 +34,16 @@ public class Dome {
         this(Config.getConfig().numPanels);
     }
 
-    public Dome(int layout) {
+    public Dome(int numPanels) {
+	this(LayoutUtil.getPanelLayoutForNumPanels(numPanels));
+	System.out.println(String.format("Using %d-panel layout", numPanels));
+    }
+
+    protected Dome(PanelLayout layout) {
         // e.g. 15
         panel_size = Config.PANEL_SIZE;
 
-	LayoutUtil.PanelConfig config = LayoutUtil.getPanelConfig(LayoutUtil.getPanelLayoutForNumPanels(layout));
-	System.out.println(String.format("Using %d-panel layout", layout));
+	LayoutUtil.PanelConfig config = LayoutUtil.getPanelConfig(layout);
 	
         coords = config.fill(panel_size);
         points = config.coordsToXy(coords);
