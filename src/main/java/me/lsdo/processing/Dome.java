@@ -31,16 +31,16 @@ public class Dome {
     private double radius;
 
     public Dome() {
-        this(13);
+        this(Config.getConfig().numPanels);
     }
 
     public Dome(int layout) {
-
         // e.g. 15
         panel_size = Config.PANEL_SIZE;
 
-        LayoutUtil.PanelConfig config = LayoutUtil.getPanelConfig(LayoutUtil.getPanelLayoutForNumPanels(layout));
-
+	LayoutUtil.PanelConfig config = LayoutUtil.getPanelConfig(LayoutUtil.getPanelLayoutForNumPanels(layout));
+	System.out.println(String.format("Using %d-panel layout", layout));
+	
         coords = config.fill(panel_size);
         points = config.coordsToXy(coords);
         colors = new HashMap<DomeCoord, Integer>();

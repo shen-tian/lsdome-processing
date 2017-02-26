@@ -8,6 +8,10 @@ import java.io.*;
 
 public class Config {
 
+    public static final String DEFAULT_HOST = "127.0.0.1";
+    public static final int DEFAULT_PORT = 7890;
+    public static final int DEFAULT_PANELS = 24;
+    
     private static class ConfigInstance {
         public static Config config = new Config();
     }
@@ -21,12 +25,7 @@ public class Config {
         Properties prop = new Properties();
         InputStream input = null;
 
-        // defaults
-        OpcHostname = "127.0.0.1";
-        OpcPort = 7890;
-
         try {
-
             String workingDir = System.getProperty("user.dir");
             System.out.println("Looking for config.properties in: " + workingDir);
 
@@ -43,9 +42,14 @@ public class Config {
                     OpcHostname = prop.getProperty("opchostname");
                 if (prop.containsKey("opcport"))
                     OpcPort = Integer.parseInt(prop.getProperty("opcport"));
-            }
+		if (prop.containsKey("num_panels"))
+                    numPanels = Integer.parseInt(prop.getProperty("num_panels"));
+            } else {
+		System.out.println("No properties file found");
+	    }
 
         } catch (IOException ex) {
+	    System.out.println("Error reading properties");
             ex.printStackTrace();
         } finally {
             if (input != null) {
@@ -61,8 +65,9 @@ public class Config {
     // Debug mode.
     static final boolean DEBUG = false;
 
-    public String OpcHostname;
-    public int OpcPort;
+    public String OpcHostname = DEFAULT_HOST;
+    public int OpcPort = DEFAULT_PORT;
+    public int numPanels = DEFAULT_PANELS;
 
     // Size of single panel's pixel grid.
     static final int PANEL_SIZE = 15;

@@ -27,16 +27,14 @@ public class OPC implements Runnable {
 
     public OPC()
     {
-        this.host = Config.getConfig().OpcHostname;
-        this.port = Config.getConfig().OpcPort;
-
-        thread = new Thread(this);
-        thread.start();
+	this(Config.getConfig().OpcHostname,
+	     Config.getConfig().OpcPort);
     }
 
     public OPC(String host, int port) {
         this.host = host;
         this.port = port;
+	System.out.println(String.format("OPC endpoint %s:%d", host, port));
         thread = new Thread(this);
         thread.start();
     }
