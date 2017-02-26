@@ -256,6 +256,21 @@ public class LayoutUtil {
             }
         };
 
+    public static PanelLayout getPanelLayoutForNumPanels(int numPanels) {
+        switch (numPanels) {
+        case 2:
+            return PanelLayout._2;
+        case 6:
+            return PanelLayout._6;
+        case 13:
+            return PanelLayout._13;
+        case 24:
+            return PanelLayout._24;
+        default:
+            throw new RuntimeException(String.format("no defined layout for %d panels", numPanels));
+        }
+    }
+    
     public static PanelConfig getPanelConfig(PanelLayout config) {
         switch (config) {
         case _2:
