@@ -32,7 +32,10 @@ public abstract class XYAnimation extends DomeAnimation {
         super(dome, opc);
 	this.baseSubsampling = baseSubsampling;
     }
-
+    
+    // Can't do this in the constructor because generating the sub-sample coordinates usually
+    // depends on member variables in the sketch, which can only be set after the constructor
+    // has finished.
     @Override
     protected void init() {
         points_ir = new HashMap<DomeCoord, ArrayList<PVector2>>();
