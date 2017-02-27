@@ -304,6 +304,10 @@ public class LayoutUtil {
         return Vadd(basisTransform(p, U, V), offset);
     }
 
+    public static PVector2 normalizedXyToScreen(PVector2 p, int width, int height) {
+	return xyToScreen(p, width, height, 2., true);
+    }
+
     // Inverse of xyToScreen
     public static PVector2 screenToXy(PVector2 p, int width, int height, double span, boolean horizSpan) {
         double scale = span / (horizSpan ? width : height);

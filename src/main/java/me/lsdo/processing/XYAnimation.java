@@ -2,24 +2,23 @@ package me.lsdo.processing;
 
 // Template for sketches that compute pixel values directly based on their (x,y) position within a
 // a scene. This implies you have a sampling function to render a scene pixel-by-pixel (such as
-// ray-tracing and fractals). It is not for scenes that must be rendered the whole screen at once
-// (i.e., anything using GPU acceleration), nor for 'pixel art'-type scenes where you want to treat
-// the pixels as a discrete grid.
-//
-// Both spatial and temporal anti-aliasing is supported.
+// ray-tracing and fractals). This sketch is also used to sample rendered pixels from a processing
+// canvas via CanvasSketch. Spatial anti-aliasing is supported. Variable-density sub-sampling is
+// supported.
 
 import java.util.*;
-//import processing.core.PVector;
 
-// IR is the type of the intermediate representation of the individual points to be sampled/rendered.
 public abstract class XYAnimation extends DomeAnimation {
 
     static final int DEFAULT_BASE_SUBSAMPLING = 1;
     static final int MAX_SUBSAMPLING = 64;
 
-
+    private int baseSubsampling;
+    
     // Mapping of display pixels to 1 or more actual samples that will be combined to yield that
-    // display pixel's color.
+    // display pixel's color. Most simply the samples will be xy-coordinates near the dome pixels,
+    // though they may also be transformed into some intermediate vector space (screen pixels, a
+    // UV-mapped texture, etc.) for efficiency.
     private HashMap<DomeCoord, ArrayList<PVector2>> points_ir;
 
     public XYAnimation(Dome dome, OPC opc) {
@@ -31,36 +30,37 @@ public abstract class XYAnimation extends DomeAnimation {
     // re-computing it every frame.
     public XYAnimation(Dome dome, OPC opc, int baseSubsampling) {
         super(dome, opc);
+	this.baseSubsampling = baseSubsampling;
+    }
 
+    protected void init() {
         points_ir = new HashMap<DomeCoord, ArrayList<PVector2>>();
-        int total_subsamples = baseSubsampling * dome.getNumPoints();
-        int num_subsamples = Math.min(baseSubsampling, MAX_SUBSAMPLING);
-
+        int total_subsamples = 0;
         for (DomeCoord c : dome.coords) {
             PVector2 p = dome.getLocation(c);
             ArrayList<PVector2> samples = new ArrayList<PVector2>();
             points_ir.put(c, samples);
 
             p = normalizePoint(p);
-
+            int num_subsamples = Math.min((int)Math.ceil(baseSubsampling * subsamplingBoost(p)), MAX_SUBSAMPLING);
             boolean jitter = (num_subsamples > 1);
             for (int i = 0; i < num_subsamples; i++) {
                 PVector2 offset = (jitter ?
-                        normalizePoint(LayoutUtil.polarToXy(LayoutUtil.V(
-                                Math.random() * .5 * LayoutUtil.pixelSpacing(dome.getPanelSize()),
-                                Math.random() * 2 * Math.PI
-                        ))) :
-                        LayoutUtil.V(0, 0));
+				   normalizePoint(LayoutUtil.polarToXy(LayoutUtil.V(
+				    Math.random() * .5*LayoutUtil.pixelSpacing(dome.getPanelSize()),
+				    Math.random() * 2*Math.PI
+                                  ))) :
+                                  LayoutUtil.V(0, 0));
                 PVector2 sample = LayoutUtil.Vadd(p, offset);
-                samples.add(sample);
+                samples.add(toIntermediateRepresentation(sample));
             }
+
+            total_subsamples += num_subsamples;
         }
 
-        System.out.println(String.format("%d subsamples for %d pixels (%d samples/pixel)",
-                total_subsamples, dome.getNumPoints(), baseSubsampling));
-
+        System.out.println(String.format("%d subsamples for %d pixels (%.1f samples/pixel)",
+					 total_subsamples, dome.getNumPoints(), (double)total_subsamples / dome.getNumPoints()));
     }
-
 
     // Convert an xy coordinate in 'panel length' units such that the perimeter of the display area
     // is the unit circle.
@@ -82,5 +82,18 @@ public abstract class XYAnimation extends DomeAnimation {
     // amount of jitter added. Return a color.
     protected abstract int samplePoint(PVector2 ir, double t);
 
+    // **OVERRIDE** (optional)
+    // We may want to perform more subsampling in certain areas. Return the factor (e.g., 2x, 3x) to
+    // increase subsampling by at the given point.
+    double subsamplingBoost(PVector2 p) {
+        return 1.;
+    }
 
+    // **OVERRIDE** (optional)
+    // Convert an xy point to be sampled into an intermediate representation, if it would save work
+    // that would otherwise be re-computed each frame.
+    PVector2 toIntermediateRepresentation(PVector2 p) {
+        return p;
+    }
+    
 }

@@ -10,6 +10,7 @@ public abstract class DomeAnimation {
     protected Dome dome;
     protected OPC opc;
 
+    private boolean initialized = false;
 
     public DomeAnimation(Dome dome, OPC opc) {
         this.dome = dome;
@@ -19,6 +20,11 @@ public abstract class DomeAnimation {
     }
 
     public void draw(double t) {
+	if (!initialized) {
+	    init();
+	    initialized = true;
+	}
+	
         preFrame(t);
         for (DomeCoord c : dome.coords){
             dome.setColor(c, drawPixel(c, t));
@@ -53,4 +59,8 @@ public abstract class DomeAnimation {
     protected void postFrame(double t){
 
     }
+
+    // Override: optional
+    // Perform one-time initialization that for whatever reason can't be performed in the constructor
+    protected void init() {}
 }

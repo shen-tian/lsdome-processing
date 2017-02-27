@@ -81,4 +81,9 @@ public class Dome {
         return radius;
     }
 
+    public PVector2 domeCoordToScreen(DomeCoord c, int width, int height) {
+	return LayoutUtil.xyToScreen(getLocation(c),
+				     width, height, 2 * getRadius(), true);
+    }
+    
 }

@@ -10,6 +10,7 @@
 
 package me.lsdo.processing;
 
+import java.util.*;
 import processing.core.PApplet;
 
 public class PixelGridSketch {
@@ -17,10 +18,18 @@ public class PixelGridSketch {
     protected PApplet app;
     protected DomeAnimation animation;
 
+    private Map<DomeCoord, PVector2> screenCoords;
+    
     public PixelGridSketch(PApplet app, DomeAnimation animation) {
-
         this.app = app;
         this.animation = animation;
+
+	// Pre-compute screen coordinates for dome pixels.
+	screenCoords = new HashMap<DomeCoord, PVector2>();
+        for (DomeCoord c : animation.dome.coords) {
+            PVector2 screenCoord = animation.dome.domeCoordToScreen(c, app.width, app.height);
+	    screenCoords.put(c, screenCoord);
+        }
     }
 
     public void draw() {
@@ -31,15 +40,12 @@ public class PixelGridSketch {
         app.background(0);
         app.noStroke();
         for (DomeCoord c : animation.dome.coords){
-            PVector2 p = LayoutUtil.xyToScreen(animation.dome.getLocation(c),
-                    app.width, app.height, 2 * animation.dome.getRadius(), true);
+            PVector2 p = screenCoords.get(c);
             app.fill(animation.dome.getColor(c));
             app.ellipse(p.x, p.y, 3, 3);
         }
 
-
         app.fill(127);
-
         app.text("opc @" + animation.getOpcHost(), 100, app.height - 10);
         app.text(String.format("%.1ffps", app.frameRate), 10, app.height - 10);
 
