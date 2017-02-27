@@ -5,8 +5,8 @@ PixelGridSketch sketch;
 void setup() {
     size(450, 450);
     Dome dome = new Dome();
-    OPC opc = new OPC("127.0.0.1", 7890);
-    DomeAnimation animation = new PixelTestAnimation(dome, opc);
+    OPC opc = new OPC();
+    DomeAnimation animation = new GridTest(dome, opc);
     sketch = new PixelGridSketch(this, animation);
 }
 
