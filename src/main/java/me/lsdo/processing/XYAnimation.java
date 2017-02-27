@@ -33,6 +33,7 @@ public abstract class XYAnimation extends DomeAnimation {
 	this.baseSubsampling = baseSubsampling;
     }
 
+    @Override
     protected void init() {
         points_ir = new HashMap<DomeCoord, ArrayList<PVector2>>();
         int total_subsamples = 0;
@@ -68,6 +69,7 @@ public abstract class XYAnimation extends DomeAnimation {
         return LayoutUtil.Vmult(p, 1. / dome.getRadius());
     }
 
+    @Override
     protected int drawPixel(DomeCoord c, double t) {
         ArrayList<PVector2> sub = points_ir.get(c);
 

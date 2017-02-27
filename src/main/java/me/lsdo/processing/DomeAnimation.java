@@ -11,6 +11,7 @@ public abstract class DomeAnimation {
     protected OPC opc;
 
     private boolean initialized = false;
+    private double lastT = 0;
 
     public DomeAnimation(Dome dome, OPC opc) {
         this.dome = dome;
@@ -25,12 +26,14 @@ public abstract class DomeAnimation {
 	    initialized = true;
 	}
 	
-        preFrame(t);
+        preFrame(t, t - lastT);
         for (DomeCoord c : dome.coords){
             dome.setColor(c, drawPixel(c, t));
         }
         postFrame(t);
         opc.draw();
+	
+	lastT = t;
     }
 
     public Dome getDome(){
@@ -47,9 +50,9 @@ public abstract class DomeAnimation {
     /** Override this for pre-draw stuff.
      *  e.g. loadPixel, or advance animation state.
      * @param t time in seconds since start.
+     * @param deltaT time in seconds since last frame.
      */
-    protected void preFrame(double t){
-
+    protected void preFrame(double t, double deltaT){
     }
 
     /** Override this for post-draw stuff
@@ -57,9 +60,8 @@ public abstract class DomeAnimation {
      * @param t time in seconds since start
      */
     protected void postFrame(double t){
-
     }
-
+    
     // Override: optional
     // Perform one-time initialization that for whatever reason can't be performed in the constructor
     protected void init() {}

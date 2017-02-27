@@ -25,11 +25,13 @@ public class CanvasSketch extends XYAnimation {
         this.app = app;
     }
 
-    protected void preFrame(double t){
+    @Override
+    protected void preFrame(double t, double deltaT){
         app.loadPixels();
     }
 
-    protected  void postFrame(double t){
+    @Override
+    protected void postFrame(double t){
 
         // draw pixel locations
         for (DomeCoord c : dome.coords){
@@ -48,6 +50,7 @@ public class CanvasSketch extends XYAnimation {
 
     }
 
+    @Override
     protected int samplePoint(PVector2 screenP, double t)
     {
         int sampleLocation = (int)(Math.floor(screenP.x)) + app.width * ((int) Math.floor(screenP.y));
@@ -55,6 +58,7 @@ public class CanvasSketch extends XYAnimation {
     }
 
     // Store samples as screen coordinates.
+    @Override
     PVector2 toIntermediateRepresentation(PVector2 p) {
 	return LayoutUtil.normalizedXyToScreen(p, app.width, app.height);
     }

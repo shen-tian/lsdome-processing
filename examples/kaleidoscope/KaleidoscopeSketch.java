@@ -26,6 +26,7 @@ public class KaleidoscopeSketch extends DomeAnimation {
 
     // This is the kaleidoscope effect. Depending on which panel, flip/rotate.
     // and copy the base panel's colors.
+    @Override
     public int drawPixel(DomeCoord c, double t) {
         int pos = MathUtil.mod(c.panel.u - c.panel.v, 3);
         int rot = MathUtil.mod(c.panel.getOrientation() == TriCoord.PanelOrientation.A ? 2*pos : 1-2*pos, 6);
