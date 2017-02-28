@@ -65,7 +65,7 @@ public class CanvasSketch extends XYAnimation {
     
     public void draw()
     {
-        draw(0); // because we don't use time here.
+        draw(app.millis() / 1000.);
     }
 
 }

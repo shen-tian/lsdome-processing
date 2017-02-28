@@ -7,11 +7,14 @@ package me.lsdo.processing;
  */
 public abstract class DomeAnimation {
 
+    public static final double FRAMERATE_SMOOTHING_FACTOR = .9;  // [0, 1) -- higher == smoother
+    
     protected Dome dome;
     protected OPC opc;
 
     private boolean initialized = false;
     private double lastT = 0;
+    public double frameRate = 0.;  // fps
 
     public DomeAnimation(Dome dome, OPC opc) {
         this.dome = dome;
@@ -25,15 +28,17 @@ public abstract class DomeAnimation {
 	    init();
 	    initialized = true;
 	}
+
+	double deltaT = t - lastT;
+	lastT = t;
+	updateFramerate(deltaT);
 	
-        preFrame(t, t - lastT);
+        preFrame(t, deltaT);
         for (DomeCoord c : dome.coords){
             dome.setColor(c, drawPixel(c, t));
         }
         postFrame(t);
         opc.draw();
-	
-	lastT = t;
     }
 
     public Dome getDome(){
@@ -65,4 +70,10 @@ public abstract class DomeAnimation {
     // Override: optional
     // Perform one-time initialization that for whatever reason can't be performed in the constructor
     protected void init() {}
+
+    private void updateFramerate(double frameT) {
+	double avgFrameLen = frameRate <= 0. ? frameT : 1. / frameRate;
+        avgFrameLen = FRAMERATE_SMOOTHING_FACTOR * avgFrameLen + (1 - FRAMERATE_SMOOTHING_FACTOR) * frameT;
+	frameRate = 1. / avgFrameLen;
+    }
 }
