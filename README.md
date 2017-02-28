@@ -8,7 +8,7 @@ This uses the correct format for Processing [Contributed Libraries](https://gith
 Note that this targets Processing 2. No idea if/when we'll support Processing 3.
 
 It can also be used as a straightforward Java library, if you'd prefer to not
-use the standard Java tools, or as someone put it, "avoid the arty bullshit
+use the standard Processing tools, or as someone put it, "avoid the arty bullshit
 language that doesn't make sense".
 
 ## Goals
@@ -34,10 +34,10 @@ The process is slightly manual. But we don't want to deal with Processing's
 library publishing stuff. Instructions work on Linux and macOS. Something 
 similar should work in Windows. Assumes you've got Java installed.
 
-1. `git clone` somewhere.
-2. `./gradlew makeArtifact` to build. This creates `lsdome-processing.zip` in `\build\distributions\`.
-3. Unzip the contents into your Processing `libraries` folder. This seems to be the `~\Documents\Processing\libraries`
-folder on macOS. Restart Processing IDE and you are good. 
+1. `git clone` this repo somewhere.
+2. `./gradlew makeArtifact` to build. This creates `lsdome.zip` in `\build\distributions\`.
+3. Unzip the contents into your Processing `libraries` folder. This seems to be `~\Documents\Processing\libraries`
+on macOS and `~/sketchbook/libraries` on linux (which only appears after running processing for the first time). Restart Processing IDE and you are good. 
 
 Will fix in the gradle script.
 

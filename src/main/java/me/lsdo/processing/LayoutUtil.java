@@ -256,6 +256,21 @@ public class LayoutUtil {
             }
         };
 
+    public static PanelLayout getPanelLayoutForNumPanels(int numPanels) {
+        switch (numPanels) {
+        case 2:
+            return PanelLayout._2;
+        case 6:
+            return PanelLayout._6;
+        case 13:
+            return PanelLayout._13;
+        case 24:
+            return PanelLayout._24;
+        default:
+            throw new RuntimeException(String.format("no defined layout for %d panels", numPanels));
+        }
+    }
+    
     public static PanelConfig getPanelConfig(PanelLayout config) {
         switch (config) {
         case _2:
@@ -287,6 +302,10 @@ public class LayoutUtil {
         PVector2 V = V(0, -1. / scale);
         PVector2 offset = Vmult(V(width, height), .5);
         return Vadd(basisTransform(p, U, V), offset);
+    }
+
+    public static PVector2 normalizedXyToScreen(PVector2 p, int width, int height) {
+	return xyToScreen(p, width, height, 2., true);
     }
 
     // Inverse of xyToScreen

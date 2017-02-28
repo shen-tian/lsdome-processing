@@ -7,8 +7,8 @@ int pitch = 50;
 void setup()
 {
     size(300, 300);
-    Dome dome = new Dome(6);
-    OPC opc = new OPC("127.0.0.1", 7890);
+    Dome dome = new Dome();
+    OPC opc = new OPC();
 
     sketch = new CanvasSketch(this, dome, opc, 16);
 

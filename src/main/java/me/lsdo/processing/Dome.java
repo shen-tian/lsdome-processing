@@ -30,36 +30,30 @@ public class Dome {
     // Distance from center to farthest pixel, in panel lengths
     private double radius;
 
-    public Dome () {
-        this(13);
+    public Dome() {
+        this(Config.getConfig().numPanels);
     }
 
-    public Dome(int layout) {
+    public Dome(int numPanels) {
+	this(LayoutUtil.getPanelLayoutForNumPanels(numPanels));
+	System.out.println(String.format("Using %d-panel layout", numPanels));
+    }
 
+    protected Dome(PanelLayout layout) {
         // e.g. 15
         panel_size = Config.PANEL_SIZE;
 
-        LayoutUtil.PanelConfig config;
-        if (layout == 13)
-            config = LayoutUtil.getPanelConfig(PanelLayout._13);
-        else if (layout == 6)
-            config = LayoutUtil.getPanelConfig(PanelLayout._6);
-        else
-            config = LayoutUtil.getPanelConfig(PanelLayout._2);
-
+	LayoutUtil.PanelConfig config = LayoutUtil.getPanelConfig(layout);
+	
         coords = config.fill(panel_size);
         points = config.coordsToXy(coords);
         colors = new HashMap<DomeCoord, Integer>();
 
-        // Don't think this is a super useful feature.
-        //radius =LayoutUtil.getPanelConfig(Config.PARTIAL_LAYOUT ?
-        //        Config.FULL_PANEL_LAYOUT :
-        //        Config.PANEL_LAYOUT).radius;
+	radius = config.radius;
 
-        radius = config.radius;
-
-        for (DomeCoord c : coords)
+        for (DomeCoord c : coords) {
             setColor(c, 0);
+	}
 
     }
 
@@ -87,4 +81,9 @@ public class Dome {
         return radius;
     }
 
+    public PVector2 domeCoordToScreen(DomeCoord c, int width, int height) {
+	return LayoutUtil.xyToScreen(getLocation(c),
+				     width, height, 2 * getRadius(), true);
+    }
+    
 }

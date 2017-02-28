@@ -25,15 +25,17 @@ public class CanvasSketch extends XYAnimation {
         this.app = app;
     }
 
-    protected void preFrame(double t){
+    @Override
+    protected void preFrame(double t, double deltaT){
         app.loadPixels();
     }
 
-    protected  void postFrame(double t){
+    @Override
+    protected void postFrame(double t){
 
         // draw pixel locations
         for (DomeCoord c : dome.coords){
-            PVector2 screenP = LayoutUtil.xyToScreen(dome.getLocation(c), app.width, app.height, 2 * dome.getRadius(), true);
+	    PVector2 screenP = dome.domeCoordToScreen(c, app.width, app.height);
             int pixelLocation = (int) Math.floor(screenP.x) + app.width * ((int) Math.floor(screenP.y));
 
             app.pixels[pixelLocation] = 0xFFFFFF ^ app.pixels[pixelLocation];
@@ -48,48 +50,22 @@ public class CanvasSketch extends XYAnimation {
 
     }
 
-    protected int samplePoint(PVector2 ir, double t)
+    @Override
+    protected int samplePoint(PVector2 screenP, double t)
     {
-        PVector2 screenP = LayoutUtil.xyToScreen(ir, app.width, app.height, 2 * dome.getRadius(), true);
         int sampleLocation = (int)(Math.floor(screenP.x)) + app.width * ((int) Math.floor(screenP.y));
         return app.pixels[sampleLocation];
     }
 
+    // Store samples as screen coordinates.
+    @Override
+    PVector2 toIntermediateRepresentation(PVector2 p) {
+	return LayoutUtil.normalizedXyToScreen(p, app.width, app.height);
+    }
+    
     public void draw()
     {
         draw(0); // because we don't use time here.
-    }
-
-    public void writeLayoutJson(){
-
-        ArrayList<PVector2> xy = new ArrayList<PVector2>();
-        for (DomeCoord c : dome.coords) {
-            xy.add(dome.getLocation(c));
-        }
-
-        generateOPCSimLayout(xy, app, "layout.json");
-    }
-
-    // Generates the JSON config file for OPC simulator
-    public static void generateOPCSimLayout(ArrayList<PVector2> points, PApplet app, String fileName)
-    {
-        JSONArray values = new JSONArray();
-
-        for (int i = 0; i < points.size(); i++) {
-
-            JSONObject point = new JSONObject();
-
-            float[] coordinates = new float[3];
-            coordinates[0] = 2 * points.get(i).x;
-            coordinates[1] = 2 * points.get(i).y;
-            coordinates[2] = 0;
-
-            point.setJSONArray("point", new JSONArray(new FloatList(coordinates)));
-
-            values.setJSONObject(i, point);
-        }
-
-        app.saveJSONArray(values, fileName);
     }
 
 }

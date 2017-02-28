@@ -49,7 +49,7 @@ void setup()
   colorMode(HSB, 100);
   texture = loadImage("ring.png");
 
-  Dome dome = new Dome(6);
+  Dome dome = new Dome();
   OPC opc = new OPC();
   canvas = new CanvasSketch(this, dome, opc, 1);
 
