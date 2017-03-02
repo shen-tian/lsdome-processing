@@ -59,7 +59,7 @@ public class CanvasSketch extends XYAnimation {
 
     // Store samples as screen coordinates.
     @Override
-    PVector2 toIntermediateRepresentation(PVector2 p) {
+    protected PVector2 toIntermediateRepresentation(PVector2 p) {
 	return LayoutUtil.normalizedXyToScreen(p, app.width, app.height);
     }
     
