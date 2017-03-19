@@ -22,7 +22,7 @@ public abstract class XYAnimation extends DomeAnimation {
     private HashMap<DomeCoord, ArrayList<PVector2>> points_ir;
 
     public XYAnimation(Dome dome, OPC opc) {
-        this(dome, opc, DEFAULT_BASE_SUBSAMPLING);
+        this(dome, opc, Config.getSketchProperty("subsampling", DEFAULT_BASE_SUBSAMPLING));
     }
 
     // Assign each display pixel to N random samples based on the required amount of subsampling.

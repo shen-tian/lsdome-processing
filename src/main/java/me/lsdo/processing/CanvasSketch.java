@@ -17,7 +17,7 @@ public class CanvasSketch extends XYAnimation {
     private static int DEFAULT_AA = 8;
 
     public CanvasSketch(PApplet app, Dome dome, OPC opc){
-        this(app, dome, opc, DEFAULT_AA);
+        this(app, dome, opc, Config.getSketchProperty("subsampling", DEFAULT_AA));
     }
 
     public CanvasSketch(PApplet app, Dome dome, OPC opc, int antiAliasingSamples){
