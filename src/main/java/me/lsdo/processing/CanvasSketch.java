@@ -17,7 +17,7 @@ public class CanvasSketch extends XYAnimation {
     private static int DEFAULT_AA = 8;
 
     public CanvasSketch(PApplet app, Dome dome, OPC opc){
-        this(app, dome, opc, DEFAULT_AA);
+        this(app, dome, opc, Config.getSketchProperty("subsampling", DEFAULT_AA));
     }
 
     public CanvasSketch(PApplet app, Dome dome, OPC opc, int antiAliasingSamples){
@@ -59,13 +59,13 @@ public class CanvasSketch extends XYAnimation {
 
     // Store samples as screen coordinates.
     @Override
-    PVector2 toIntermediateRepresentation(PVector2 p) {
+    protected PVector2 toIntermediateRepresentation(PVector2 p) {
 	return LayoutUtil.normalizedXyToScreen(p, app.width, app.height);
     }
     
     public void draw()
     {
-        draw(0); // because we don't use time here.
+        draw(app.millis() / 1000.);
     }
 
 }

@@ -22,7 +22,7 @@ public abstract class XYAnimation extends DomeAnimation {
     private HashMap<DomeCoord, ArrayList<PVector2>> points_ir;
 
     public XYAnimation(Dome dome, OPC opc) {
-        this(dome, opc, DEFAULT_BASE_SUBSAMPLING);
+        this(dome, opc, Config.getSketchProperty("subsampling", DEFAULT_BASE_SUBSAMPLING));
     }
 
     // Assign each display pixel to N random samples based on the required amount of subsampling.
@@ -83,21 +83,32 @@ public abstract class XYAnimation extends DomeAnimation {
         return OpcColor.blend(samples);
     }
 
-    // Render an individual sample. 't' is clock time, including temporal jitter. 't_jitter' is the
-    // amount of jitter added. Return a color.
-    protected abstract int samplePoint(PVector2 ir, double t);
+    // Render an individual sample. 't' is clock time. Default implementation redirects to the
+    // motion blur version, but override this function rather than that one if you don't care about
+    // that.
+    protected int samplePoint(PVector2 ir, double t) {
+	double temporal_jitter = (Math.random() - .5) / frameRate;
+	return samplePointWithMotionBlur(ir, t + temporal_jitter, temporal_jitter);
+    }
+
+    // Render an individual sample, with motion blur. 't' is clock time plus a random jitter of up to
+    // one frame. jitterT is the amount of jitter added. Requires decent subsampling to get a good
+    // effect.
+    protected int samplePointWithMotionBlur(PVector2 ir, double t, double jitterT) {
+	throw new RuntimeException("not implemented");
+    }
 
     // **OVERRIDE** (optional)
     // We may want to perform more subsampling in certain areas. Return the factor (e.g., 2x, 3x) to
     // increase subsampling by at the given point.
-    double subsamplingBoost(PVector2 p) {
+    protected double subsamplingBoost(PVector2 p) {
         return 1.;
     }
 
     // **OVERRIDE** (optional)
     // Convert an xy point to be sampled into an intermediate representation, if it would save work
     // that would otherwise be re-computed each frame.
-    PVector2 toIntermediateRepresentation(PVector2 p) {
+    protected PVector2 toIntermediateRepresentation(PVector2 p) {
         return p;
     }
     

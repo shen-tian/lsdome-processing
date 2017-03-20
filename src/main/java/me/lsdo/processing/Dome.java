@@ -85,5 +85,33 @@ public class Dome {
 	return LayoutUtil.xyToScreen(getLocation(c),
 				     width, height, 2 * getRadius(), true);
     }
+
+    public PVector2[] getViewport() {
+	return getViewport(0.);
+    }
     
+    // Returns the bounding rectangular viewport for the dome pixel area (rotated by angle 'rot').
+    // 1st vector in the array is the lower left corner; 2nd vector is the width/height.
+    public PVector2[] getViewport(double rot) {
+        double xmin = getRadius();
+        double xmax = -getRadius();
+        double ymin = getRadius();
+        double ymax = -getRadius();
+        for (DomeCoord c : coords) {
+	    PVector2 p = LayoutUtil.Vrot(getLocation(c), rot);
+            xmin = Math.min(xmin, p.x);
+            xmax = Math.max(xmax, p.x);
+            ymin = Math.min(ymin, p.y);
+            ymax = Math.max(ymax, p.y);
+        }
+        double margin = .5*LayoutUtil.pixelSpacing(getPanelSize());
+        xmin -= margin;
+        xmax += margin;
+        ymin -= margin;
+        ymax += margin;
+
+	PVector2 p0 = LayoutUtil.V(xmin, ymin);
+        PVector2 pdiag = LayoutUtil.Vsub(LayoutUtil.V(xmax, ymax), p0);
+	return new PVector2[] {p0, pdiag};
+    }
 }
