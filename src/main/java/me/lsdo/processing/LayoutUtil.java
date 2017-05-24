@@ -5,6 +5,7 @@ import java.util.*;
 enum PanelLayout {
     _2,
     _6,
+    _10,
     _13,
     _24
 }
@@ -229,6 +230,21 @@ public class LayoutUtil {
             }
         };
 
+    public static PanelConfig _10 = new PanelConfig(10,
+                                            1.5,
+                                            new int[] {4, 4, 2},
+                                            V(0, 0.5), 0.) {
+            ArrayList<DomeCoord> fill(int n) {
+                ArrayList<DomeCoord> points = new ArrayList<DomeCoord>();
+                points.addAll(fillFan(1, 4, n, V(1, 0)));
+                points.addAll(fillFan(2, 4, n, V(1, 0)));
+                points.addAll(fillFan(3, 2, n, V(1, 0)));
+              
+                return points;
+            }
+        };
+
+   
     public static PanelConfig _13 = new PanelConfig(13,
                                              Math.sqrt(7/3.),  // just trust me
                                              new int[] {4, 4, 4, 1},
@@ -262,6 +278,8 @@ public class LayoutUtil {
             return PanelLayout._2;
         case 6:
             return PanelLayout._6;
+        case 10:
+            return PanelLayout._10;
         case 13:
             return PanelLayout._13;
         case 24:
@@ -277,6 +295,8 @@ public class LayoutUtil {
             return _2;
         case _6:
             return _6;
+        case _10:
+            return _10;
         case _13:
             return _13;
         case _24:

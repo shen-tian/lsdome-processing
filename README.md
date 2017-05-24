@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/shen-tian/lsdome-processing.svg?branch=master)](https://travis-ci.org/shen-tian/lsdome-processing)
 [![Download](https://api.bintray.com/packages/shen-tian/maven/lsdome-processing/images/download.svg)](https://bintray.com/shen-tian/maven/lsdome-processing/_latestVersion)
 
-This is a Processing Library for [Limitless Slip Dome](https://github.com/shen-tian/l-s-dome).
+This is a Processing Library for [Limitless Slip Dome](https://github.com/shen-tian/lsdome).
 This uses the correct format for Processing [Contributed Libraries](https://github.com/processing/processing/wiki/How-to-Install-a-Contributed-Library).
 Note that this targets Processing 2. No idea if/when we'll support Processing 3.
 
@@ -38,8 +38,6 @@ similar should work in Windows. Assumes you've got Java installed.
 2. `./gradlew makeArtifact` to build. This creates `lsdome.zip` in `\build\distributions\`.
 3. Unzip the contents into your Processing `libraries` folder. This seems to be `~\Documents\Processing\libraries`
 on macOS and `~/sketchbook/libraries` on linux (which only appears after running processing for the first time). Restart Processing IDE and you are good. 
-
-Will fix in the gradle script.
 
 ### Plain Java
 
